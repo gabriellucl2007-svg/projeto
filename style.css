@@ -4,37 +4,46 @@
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:Arial, sans-serif;
     background:#0A0A0A;
-    color:white;
+    color:#FFFFFF;
 }
 
 /* HEADER */
 
 header{
     display:flex;
-    width:100%;
     justify-content:space-between;
     align-items:center;
-    padding:20px 40px;
+    padding:20px 50px;
     background:#111;
     border-bottom:2px solid #D4AF37;
-    position:relative;
+    position:sticky;
+    top:0;
+    z-index:1000;
 }
 
 .logo img{
-    height:100px;
+    max-height:90px;
     width:auto;
+    display:block;
+}
+
+nav{
+    display:flex;
+    gap:15px;
 }
 
 nav a{
     color:white;
     text-decoration:none;
-    margin-left:15px;
     font-weight:bold;
-    padding:10px 20px;
-    border-radius:20px;
+    transition:0.3s;
 }
 
 nav a:hover{
@@ -44,9 +53,13 @@ nav a:hover{
 /* BANNER */
 
 .banner{
-    height:90vh;
+    min-height:90vh;
+
     background:
-    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    linear-gradient(
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.7)
+    ),
     url("images/fundo.png");
 
     background-size:cover;
@@ -54,14 +67,12 @@ nav a:hover{
 
     display:flex;
     align-items:center;
-    padding-left:120px;
+
+    padding:80px;
 }
 
 .conteudo-banner{
     max-width:700px;
-    display:flex;
-    flex-direction:column;
-    gap:25px;
 }
 
 .conteudo-banner span{
@@ -70,26 +81,33 @@ nav a:hover{
 }
 
 .conteudo-banner h1{
-    font-size:90px;
-    line-height:90px;
+    font-size:80px;
+    line-height:85px;
     color:#D4AF37;
+    margin:20px 0;
 }
 
 .conteudo-banner p{
     font-size:20px;
+    margin-bottom:30px;
 }
 
-button{
-    padding:15px 30px;
+/* BOTÃO PRINCIPAL */
+
+.btn-agendar{
+    display:inline-block;
     background:#D4AF37;
-    border:none;
+    color:#000;
+    text-decoration:none;
+    padding:15px 30px;
     border-radius:8px;
     font-weight:bold;
-    cursor:pointer;
+    transition:.3s;
 }
 
-button:hover{
+.btn-agendar:hover{
     background:#F7D774;
+    transform:translateY(-3px);
 }
 
 /* SEÇÕES */
@@ -110,7 +128,7 @@ section h2{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
-    gap:20px;
+    gap:25px;
 }
 
 .card{
@@ -120,7 +138,11 @@ section h2{
     border-radius:12px;
     padding:25px;
     text-align:center;
-    transition:0.3s;
+
+    box-shadow:
+    0 0 20px rgba(212,175,55,.15);
+
+    transition:.3s;
 }
 
 .card:hover{
@@ -139,19 +161,49 @@ section h2{
 }
 
 #contato p{
-    margin:10px;
+    margin:10px 0;
+}
+
+#contato a{
+    color:white;
+    text-decoration:none;
+}
+
+/* WHATSAPP */
+
+.whatsapp-btn{
+    display:inline-block;
+    margin-top:20px;
+
+    background:#25D366;
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:15px 25px;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.whatsapp-btn:hover{
+    transform:translateY(-3px);
 }
 
 /* AGENDAMENTO */
 
 #agendamento{
-    padding:80px 20px;
     text-align:center;
 }
 
 #formAgendamento{
     max-width:500px;
     margin:auto;
+
     display:flex;
     flex-direction:column;
     gap:15px;
@@ -159,12 +211,43 @@ section h2{
 
 #formAgendamento input,
 #formAgendamento select{
+
     padding:15px;
+
     border-radius:8px;
+
     border:1px solid #D4AF37;
+
     background:#161616;
+
     color:white;
+
+    font-size:16px;
 }
+
+button{
+    background:#D4AF37;
+
+    color:black;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+button:hover{
+    background:#F7D774;
+}
+
+/* AGENDAMENTOS */
 
 #listaAgendamentos{
     max-width:800px;
@@ -172,75 +255,69 @@ section h2{
 }
 
 .agendamento-card{
+
     background:#161616;
+
     border:1px solid #D4AF37;
+
     border-radius:12px;
+
     padding:20px;
+
     margin-bottom:15px;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
 }
 
 .excluir{
-    background:#dc3545;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:8px;
-    cursor:pointer;
-}
 
-.whatsapp-btn{
-    display:inline-block;
-    margin-top:15px;
-    padding:12px 20px;
-    background:#25D366;
+    background:#dc3545;
+
     color:white;
-    text-decoration:none;
-    border-radius:8px;
-    font-weight:bold;
+
+    padding:10px 15px;
 }
 
 /* FOOTER */
 
 footer{
+
     text-align:center;
+
     padding:30px;
+
     background:#111;
+
     border-top:2px solid #D4AF37;
-}
-
-/* SMOOTH SCROLL */
-
-html{
-    scroll-behavior:smooth;
 }
 
 /* MOBILE */
 
-@media (max-width: 768px){
+@media(max-width:768px){
 
     header{
         flex-direction:column;
-        padding:15px;
         gap:15px;
+        padding:20px;
     }
 
     nav{
-        display:flex;
         flex-wrap:wrap;
         justify-content:center;
     }
 
-    nav a{
-        margin:8px;
+    .logo img{
+        max-height:75px;
     }
 
     .banner{
-        padding:20px;
-        text-align:center;
+        padding:30px;
         justify-content:center;
+        text-align:center;
     }
 
     .conteudo-banner h1{
@@ -259,11 +336,6 @@ html{
 
     .card{
         width:95%;
-        max-width:350px;
-    }
-
-    #formAgendamento{
-        width:95%;
     }
 
     .agendamento-card{
@@ -274,5 +346,10 @@ html{
 
     button{
         width:100%;
+    }
+
+    .btn-agendar{
+        width:100%;
+        text-align:center;
     }
 }
