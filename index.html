@@ -11,16 +11,19 @@
 <body>
 
 <header>
-   <div class="logo">
-    <img src="images/logo.png" alt="Logo Estação Barber">
-</div>
+
+    <div class="logo">
+        <img src="images/logo.png" alt="Logo Estação Barber">
+    </div>
 
     <nav>
         <a href="#inicio">Início</a>
         <a href="#servicos">Serviços</a>
         <a href="#barbeiros">Barbeiros</a>
         <a href="#contato">Contato</a>
+        <a href="#agendamento">Agendamento</a>
     </nav>
+
 </header>
 
 <section class="banner" id="inicio">
@@ -32,10 +35,12 @@
         <h1>ESTILO QUE<br>TE DEFINE</h1>
 
         <p>
-            AQUI TEMOS OS MELHORES PROFISSIONAIS  
+            AQUI TEMOS OS MELHORES PROFISSIONAIS
         </p>
 
-        <button>AGENDAR AGORA</button>
+        <a href="#agendamento" class="btn-agendar">
+            AGENDAR AGORA
+        </a>
 
     </div>
 
@@ -91,15 +96,22 @@
     <h2>Contato</h2>
 
     <p>Lagoa da Prata - MG</p>
-    <p>(37) 998619864</p>
 
-<a
-id="whatsappBtn"
-target="_blank"
-class="whatsapp-btn">
-Enviar para WhatsApp
-</a>
+    <p>
+        <a href="tel:+5537998619864">
+            (37) 99861-9864
+        </a>
+    </p>
 
+    <a
+        id="whatsappBtn"
+        class="whatsapp-btn"
+        href="https://wa.me/5537998619864"
+        target="_blank">
+        WhatsApp
+    </a>
+
+</section>
 
 <section id="agendamento">
 
@@ -111,45 +123,40 @@ Enviar para WhatsApp
             type="text"
             id="nome"
             placeholder="Seu nome"
-            required
-        >
+            required>
 
         <select id="barbeiro">
 
-            <option value="João">
-                João
-            </option>
+            <option value="João">João</option>
 
-            <option value="Matheus">
-                Matheus
-            </option>
+            <option value="Matheus">Matheus</option>
 
         </select>
 
         <input
             type="date"
             id="data"
-            required
-        >
+            required>
 
         <select id="hora">
-    <option>09:00</option>
-    <option>09:30</option>
-    <option>10:00</option>
-    <option>10:30</option>
-    <option>11:00</option>
-    <option>11:30</option>
-    <option>13:00</option>
-    <option>13:30</option>
-    <option>14:00</option>
-    <option>14:30</option>
-    <option>15:00</option>
-    <option>15:30</option>
-    <option>16:00</option>
-    <option>16:30</option>
-    <option>17:00</option>
-</select>
-        >
+
+            <option>09:00</option>
+            <option>09:30</option>
+            <option>10:00</option>
+            <option>10:30</option>
+            <option>11:00</option>
+            <option>11:30</option>
+            <option>13:00</option>
+            <option>13:30</option>
+            <option>14:00</option>
+            <option>14:30</option>
+            <option>15:00</option>
+            <option>15:30</option>
+            <option>16:00</option>
+            <option>16:30</option>
+            <option>17:00</option>
+
+        </select>
 
         <button type="submit">
             AGENDAR
@@ -161,10 +168,11 @@ Enviar para WhatsApp
 
 </section>
 
-
 <footer>
     © 2026 Estação Barber
 </footer>
+
+<script src="script.js"></script>
 
 </body>
 </html>
