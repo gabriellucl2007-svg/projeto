@@ -60,7 +60,7 @@ nav a:hover{
         rgba(0,0,0,0.7),
         rgba(0,0,0,0.7)
     ),
-    url("images/fundo.png");
+    url("fundo.png");
 
     background-size:cover;
     background-position:center;
