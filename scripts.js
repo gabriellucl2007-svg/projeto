@@ -171,3 +171,26 @@ await supabaseClient.from("agendamentos").insert([
     status: "confirmado"
   }
 ]);
+
+
+//agendar 
+async function agendar() {
+  console.log("ENTROU NA FUNÇÃO");
+
+  const { data, error } = await supabaseClient
+    .from("agendamentos")
+    .insert([
+      {
+        cliente_nome: "teste",
+        cliente_telefone: "123",
+        servico: "corte",
+        data: "2026-01-01",
+        hora: "10:00",
+        barbeiro: "joao",
+        status: "confirmado"
+      }
+    ]);
+
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
+}
