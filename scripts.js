@@ -84,3 +84,75 @@ function renderPainelBarbeiro(lista) {
     div.appendChild(el);
   });
 }
+
+
+// =========================
+// LOGIN
+// =========================
+async function login() {
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password: senha
+  });
+
+  if (error) {
+    alert("Erro no login");
+    return;
+  }
+
+  document.getElementById("auth").style.display = "none";
+  document.getElementById("painel").style.display = "block";
+
+  carregarPainel(data.user);
+}
+
+// =========================
+// LOGOUT
+// =========================
+async function logout() {
+  await supabaseClient.auth.signOut();
+
+  document.getElementById("auth").style.display = "block";
+  document.getElementById("painel").style.display = "none";
+}
+
+// =========================
+// CARREGAR PAINEL
+// =========================
+async function carregarPainel(user) {
+
+  const email = user.email;
+
+  const { data } = await supabaseClient
+    .from("agendamentos")
+    .select("*")
+    .eq("cliente_email", email)
+    .order("data", { ascending: true });
+
+  renderPainel(data || []);
+}
+
+// =========================
+// RENDER
+// =========================
+function renderPainel(lista) {
+  const div = document.getElementById("painelConteudo");
+  div.innerHTML = "<h3>Meus agendamentos</h3>";
+
+  lista.forEach(item => {
+    const el = document.createElement("div");
+
+    el.innerHTML = `
+      <p><strong>${item.servico}</strong></p>
+      <p>${item.data} - ${item.hora}</p>
+      <p>${item.barbeiro}</p>
+      <button onclick="cancelarAgendamento(${item.id})">Cancelar</button>
+      <hr>
+    `;
+
+    div.appendChild(el);
+  });
+}
