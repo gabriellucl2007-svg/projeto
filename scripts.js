@@ -6,6 +6,7 @@ function modoCliente() {
   const nome = prompt("Digite seu nome:");
 
   carregarAgendamentosCliente(nome);
+  const user = await supabaseClient.auth.getUser();
 }
 
 async function carregarAgendamentosCliente(nome) {
@@ -156,3 +157,17 @@ function renderPainel(lista) {
     div.appendChild(el);
   });
 }
+  // INSERT
+
+await supabaseClient.from("agendamentos").insert([
+  {
+    cliente_nome: nome,
+    cliente_telefone: telefone,
+    cliente_email: user.data.user.email, // 👈 AQUI
+    servico,
+    data,
+    hora,
+    barbeiro,
+    status: "confirmado"
+  }
+]);
