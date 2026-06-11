@@ -433,6 +433,168 @@
         }
     });
 </script>
+<script>
+/*
+ESTAÇÃO BARBER - SISTEMA DE AGENDAMENTO V1
+Front-end puro (GitHub Pages)
+*/
 
+let agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || [];
+let horariosBase = [
+  "08:00","09:00","10:00","11:00",
+  "13:00","14:00","15:00","16:00","17:00","18:00","19:00"
+];
+
+// ==========================
+// SALVAR NO LOCALSTORAGE
+// ==========================
+function salvar() {
+  localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
+}
+
+// ==========================
+// PEGAR HORÁRIOS DISPONÍVEIS
+// ==========================
+function getHorariosDisponiveis(data, barbeiro) {
+
+  let ocupados = agendamentos
+    .filter(a => a.data === data && a.barbeiro === barbeiro)
+    .map(a => a.hora);
+
+  return horariosBase.filter(h => !ocupados.includes(h));
+}
+
+// ==========================
+// CRIAR AGENDAMENTO
+// ==========================
+function criarAgendamento() {
+
+  const servico = document.querySelector("#servico").value;
+  const barbeiro = document.querySelector("#barbeiro").value;
+  const data = document.querySelector("#data").value;
+  const hora = document.querySelector("#hora").value;
+  const nome = document.querySelector("#nome").value;
+
+  if (!servico || !barbeiro || !data || !hora || !nome) {
+    alert("Preencha todos os campos");
+    return;
+  }
+
+  let novo = {
+    id: Date.now(),
+    nome,
+    servico,
+    barbeiro,
+    data,
+    hora
+  };
+
+  agendamentos.push(novo);
+  salvar();
+
+  alert("Agendamento confirmado!");
+  atualizarLista();
+}
+
+// ==========================
+// CANCELAR AGENDAMENTO
+// ==========================
+function cancelar(id) {
+  agendamentos = agendamentos.filter(a => a.id !== id);
+  salvar();
+  atualizarLista();
+}
+
+// ==========================
+// LISTAR AGENDAMENTOS
+// ==========================
+function atualizarLista() {
+
+  let lista = document.querySelector("#lista-agendamentos");
+  if (!lista) return;
+
+  lista.innerHTML = "";
+
+  agendamentos.forEach(a => {
+    let div = document.createElement("div");
+
+    div.innerHTML = `
+      <div class="card-agendamento">
+        <h3>${a.servico}</h3>
+        <p><strong>Cliente:</strong> ${a.nome}</p>
+        <p><strong>Barbeiro:</strong> ${a.barbeiro}</p>
+        <p><strong>Data:</strong> ${a.data}</p>
+        <p><strong>Hora:</strong> ${a.hora}</p>
+
+        <button onclick="cancelar(${a.id})">Cancelar</button>
+      </div>
+    `;
+
+    lista.appendChild(div);
+  });
+}
+
+// ==========================
+// ATUALIZAR HORÁRIOS DINAMICAMENTE
+// ==========================
+function atualizarHorarios() {
+
+  const data = document.querySelector("#data")?.value;
+  const barbeiro = document.querySelector("#barbeiro")?.value;
+  const selectHora = document.querySelector("#hora");
+
+  if (!data || !barbeiro || !selectHora) return;
+
+  let disponiveis = getHorariosDisponiveis(data, barbeiro);
+
+  selectHora.innerHTML = "<option value=''>Escolha o horário</option>";
+
+  disponiveis.forEach(h => {
+    let option = document.createElement("option");
+    option.value = h;
+    option.innerText = h;
+    selectHora.appendChild(option);
+  });
+}
+
+// ==========================
+// EVENTOS
+// ==========================
+document.addEventListener("DOMContentLoaded", () => {
+
+  atualizarLista();
+
+  const data = document.querySelector("#data");
+  const barbeiro = document.querySelector("#barbeiro");
+
+  if (data) data.addEventListener("change", atualizarHorarios);
+  if (barbeiro) barbeiro.addEventListener("change", atualizarHorarios);
+
+});
+</script>
+<input id="nome" placeholder="Seu nome">
+
+<select id="servico">
+  <option value="">Serviço</option>
+  <option>Corte</option>
+  <option>Barba</option>
+  <option>Corte + Barba</option>
+</select>
+
+<select id="barbeiro">
+  <option value="">Barbeiro</option>
+  <option>João</option>
+  <option>Carlos</option>
+</select>
+
+<input type="date" id="data">
+
+<select id="hora">
+  <option value="">Escolha o horário</option>
+</select>
+
+<button onclick="criarAgendamento()">Agendar</button>
+
+<div id="lista-agendamentos"></div>
 </body>
 </html>
