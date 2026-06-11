@@ -33,7 +33,7 @@ const horariosPadrao = gerarHorarios();
 // VERIFICAR HORÁRIO
 // =========================
 async function horarioDisponivel(barbeiro, data, hora) {
-  const { data: agendamentos } = await supabaseClient
+  const { data: agendamentos } = await window.supabaseClient
     .from("agendamentos")
     .select("*")
     .eq("barbeiro", barbeiro)
