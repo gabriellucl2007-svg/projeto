@@ -1,355 +1,904 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* ===========================
+   TOKENS
+=========================== */
+:root {
+    --preto: #0a0a0a;
+    --preto-card: #111111;
+    --preto-hover: #161616;
+    --dourado: #c9a84c;
+    --dourado-claro: #e2c47a;
+    --dourado-escuro: #a07c30;
+    --branco: #f5f0e8;
+    --cinza: #888880;
+    --cinza-claro: #333330;
+    --borda: rgba(201, 168, 76, 0.2);
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+
+    --radius: 4px;
+    --radius-lg: 8px;
+    --transition: 0.3s ease;
+    --max-width: 1100px;
 }
 
-html{
-    scroll-behavior:smooth;
+/* ===========================
+   RESET
+=========================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-    font-family:Arial, sans-serif;
-    background:#0A0A0A;
-    color:#FFFFFF;
+html {
+    scroll-behavior: smooth;
 }
 
-/* HEADER */
-
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 50px;
-    background:#111;
-    border-bottom:2px solid #D4AF37;
-    position:sticky;
-    top:0;
-    z-index:1000;
+body {
+    background-color: var(--preto);
+    color: var(--branco);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-.logo img{
-    max-height:90px;
-    width:auto;
-    display:block;
+img {
+    max-width: 100%;
+    display: block;
 }
 
-nav{
-    display:flex;
-    gap:15px;
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
-nav a{
-    color:white;
-    text-decoration:none;
-    font-weight:bold;
-    transition:0.3s;
+/* ===========================
+   CONTAINER
+=========================== */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
-nav a:hover{
-    color:#D4AF37;
+/* ===========================
+   HEADER
+=========================== */
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 24px 0;
+    transition: var(--transition);
 }
 
-/* BANNER */
-
-.banner{
-    min-height:90vh;
-
-    background:
-    linear-gradient(
-        rgba(0,0,0,0.7),
-        rgba(0,0,0,0.7)
-    ),
-    url("fundo.png");
-
-    background-size:cover;
-    background-position:center;
-
-    display:flex;
-    align-items:center;
-
-    padding:80px;
+#header.scrolled {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--borda);
 }
 
-.conteudo-banner{
-    max-width:700px;
+.header-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.conteudo-banner span{
-    color:#D4AF37;
-    font-size:18px;
+.logo img {
+    height: 48px;
+    width: auto;
 }
 
-.conteudo-banner h1{
-    font-size:80px;
-    line-height:85px;
-    color:#D4AF37;
-    margin:20px 0;
+nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
 }
 
-.conteudo-banner p{
-    font-size:20px;
-    margin-bottom:30px;
+nav a {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    transition: color var(--transition);
 }
 
-/* BOTÃO PRINCIPAL */
-
-.btn-agendar{
-    display:inline-block;
-    background:#D4AF37;
-    color:#000;
-    text-decoration:none;
-    padding:15px 30px;
-    border-radius:8px;
-    font-weight:bold;
-    transition:.3s;
+nav a:hover {
+    color: var(--dourado);
 }
 
-.btn-agendar:hover{
-    background:#F7D774;
-    transform:translateY(-3px);
+nav a.nav-cta {
+    background: var(--dourado);
+    color: var(--preto);
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-weight: 600;
 }
 
-/* SEÇÕES */
-
-section{
-    padding:80px 20px;
+nav a.nav-cta:hover {
+    background: var(--dourado-claro);
+    color: var(--preto);
 }
 
-section h2{
-    text-align:center;
-    color:#D4AF37;
-    margin-bottom:40px;
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
 }
 
-/* CARDS */
-
-.cards{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:25px;
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--branco);
+    transition: var(--transition);
 }
 
-.card{
-    width:280px;
-    background:#161616;
-    border:1px solid #D4AF37;
-    border-radius:12px;
-    padding:25px;
-    text-align:center;
-
-    box-shadow:
-    0 0 20px rgba(212,175,55,.15);
-
-    transition:.3s;
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
-.card:hover{
-    transform:translateY(-5px);
+/* ===========================
+   HERO
+=========================== */
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
 }
 
-.card h3{
-    color:#D4AF37;
-    margin-bottom:10px;
+.hero-bg {
+    position: absolute;
+    inset: 0;
 }
 
-/* CONTATO */
-
-#contato{
-    text-align:center;
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
-#contato p{
-    margin:10px 0;
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(10,10,10,0.92) 0%,
+        rgba(10,10,10,0.75) 50%,
+        rgba(10,10,10,0.4) 100%
+    );
 }
 
-#contato a{
-    color:white;
-    text-decoration:none;
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
 }
 
-/* WHATSAPP */
-
-.whatsapp-btn{
-    display:inline-block;
-    margin-top:20px;
-
-    background:#25D366;
-
-    color:white;
-
-    text-decoration:none;
-
-    padding:15px 25px;
-
-    border-radius:8px;
-
-    font-weight:bold;
-
-    transition:.3s;
+.hero-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 20px;
 }
 
-.whatsapp-btn:hover{
-    transform:translateY(-3px);
+.hero-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--branco);
+    margin-bottom: 20px;
 }
 
-/* AGENDAMENTO */
-
-#agendamento{
-    text-align:center;
+.hero-content h1 em {
+    font-style: italic;
+    color: var(--dourado);
 }
 
-#formAgendamento{
-    max-width:500px;
-    margin:auto;
-
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.hero-content p {
+    font-size: 16px;
+    color: var(--cinza);
+    margin-bottom: 40px;
+    line-height: 1.7;
 }
 
-#formAgendamento input,
-#formAgendamento select{
-
-    padding:15px;
-
-    border-radius:8px;
-
-    border:1px solid #D4AF37;
-
-    background:#161616;
-
-    color:white;
-
-    font-size:16px;
+.hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-button{
-    background:#D4AF37;
-
-    color:black;
-
-    border:none;
-
-    padding:15px;
-
-    border-radius:8px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:.3s;
+.btn-primary {
+    display: inline-block;
+    background: var(--dourado);
+    color: var(--preto);
+    padding: 16px 32px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: var(--transition);
 }
 
-button:hover{
-    background:#F7D774;
+.btn-primary:hover {
+    background: var(--dourado-claro);
+    transform: translateY(-2px);
 }
 
-/* AGENDAMENTOS */
-
-#listaAgendamentos{
-    max-width:800px;
-    margin:40px auto;
+.btn-secondary {
+    display: inline-block;
+    border: 1px solid var(--borda);
+    color: var(--branco);
+    padding: 16px 32px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: var(--transition);
 }
 
-.agendamento-card{
-
-    background:#161616;
-
-    border:1px solid #D4AF37;
-
-    border-radius:12px;
-
-    padding:20px;
-
-    margin-bottom:15px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
+.btn-secondary:hover {
+    border-color: var(--dourado);
+    color: var(--dourado);
 }
 
-.excluir{
-
-    background:#dc3545;
-
-    color:white;
-
-    padding:10px 15px;
+.hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
 }
 
-/* FOOTER */
-
-footer{
-
-    text-align:center;
-
-    padding:30px;
-
-    background:#111;
-
-    border-top:2px solid #D4AF37;
+.hero-scroll span {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cinza);
 }
 
-/* MOBILE */
+.scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--dourado), transparent);
+    animation: scrollPulse 2s ease infinite;
+}
 
-@media(max-width:768px){
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
 
-    header{
-        flex-direction:column;
-        gap:15px;
-        padding:20px;
+/* ===========================
+   SECTION HEADER
+=========================== */
+section {
+    padding: 100px 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 12px;
+}
+
+.section-header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--branco);
+    letter-spacing: -0.01em;
+}
+
+/* ===========================
+   SERVIÇOS
+=========================== */
+#servicos {
+    background: var(--preto);
+    border-top: 1px solid var(--borda);
+}
+
+.servicos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--borda);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.servico-card {
+    background: var(--preto-card);
+    padding: 28px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    transition: background var(--transition);
+}
+
+.servico-card:hover {
+    background: var(--preto-hover);
+}
+
+.servico-card.destaque {
+    background: rgba(201, 168, 76, 0.06);
+}
+
+.servico-card.destaque:hover {
+    background: rgba(201, 168, 76, 0.1);
+}
+
+.servico-info h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--branco);
+    margin-bottom: 6px;
+}
+
+.servico-info p {
+    font-size: 13px;
+    color: var(--cinza);
+    line-height: 1.5;
+}
+
+.servico-preco-acao {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.preco {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dourado);
+    white-space: nowrap;
+}
+
+.btn-agendar-servico {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    border: 1px solid var(--borda);
+    padding: 6px 14px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-agendar-servico:hover {
+    background: var(--dourado);
+    color: var(--preto);
+    border-color: var(--dourado);
+}
+
+/* ===========================
+   EQUIPE
+=========================== */
+#equipe {
+    background: var(--preto-card);
+    border-top: 1px solid var(--borda);
+}
+
+.equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+}
+
+.barbeiro-card {
+    background: var(--preto);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.barbeiro-card:hover {
+    border-color: var(--dourado);
+    transform: translateY(-4px);
+}
+
+.barbeiro-foto {
+    position: relative;
+    aspect-ratio: 3/2;
+    background: var(--cinza-claro);
+    overflow: hidden;
+}
+
+.barbeiro-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.foto-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--dourado);
+    background: var(--cinza-claro);
+}
+
+.barbeiro-foto.sem-foto img {
+    display: none;
+}
+
+.barbeiro-info {
+    padding: 24px;
+}
+
+.barbeiro-info h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--branco);
+    margin-bottom: 10px;
+}
+
+.barbeiro-info p {
+    font-size: 14px;
+    color: var(--cinza);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.btn-agendar-barbeiro {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid var(--dourado);
+    color: var(--dourado);
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: var(--transition);
+}
+
+.btn-agendar-barbeiro:hover {
+    background: var(--dourado);
+    color: var(--preto);
+}
+
+/* ===========================
+   HORÁRIOS
+=========================== */
+#horarios {
+    background: var(--preto);
+    border-top: 1px solid var(--borda);
+}
+
+.horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.horario-card {
+    background: var(--preto-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    text-align: center;
+}
+
+.horario-card.fechado {
+    opacity: 0.5;
+}
+
+.horario-dia {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 16px;
+}
+
+.horario-horas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.horario-horas span {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--branco);
+}
+
+.separador {
+    color: var(--dourado) !important;
+    font-size: 16px !important;
+}
+
+/* ===========================
+   PAGAMENTOS
+=========================== */
+#pagamentos {
+    background: var(--preto-card);
+    border-top: 1px solid var(--borda);
+}
+
+.pagamentos-grid {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+}
+
+.pagamento-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--branco);
+}
+
+.pagamento-icon {
+    color: var(--dourado);
+    font-size: 16px;
+}
+
+/* ===========================
+   AGENDAMENTO
+=========================== */
+#agendamento {
+    background: var(--preto);
+    border-top: 1px solid var(--borda);
+}
+
+.agendamento-wrapper {
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.form-agendamento {
+    background: var(--preto-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dourado);
+}
+
+.form-group input,
+.form-group select {
+    background: var(--preto);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    color: var(--branco);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--transition);
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.form-group input::placeholder {
+    color: var(--cinza);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--dourado);
+}
+
+.form-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a84c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+}
+
+/* Date input color fix */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7) sepia(1) saturate(2) hue-rotate(5deg);
+    cursor: pointer;
+}
+
+.btn-submit {
+    background: var(--dourado);
+    color: var(--preto);
+    border: none;
+    padding: 16px;
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+    margin-top: 8px;
+}
+
+.btn-submit:hover {
+    background: var(--dourado-claro);
+    transform: translateY(-2px);
+}
+
+.lista-agendamentos {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lista-agendamentos .card {
+    background: var(--preto-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-size: 14px;
+}
+
+.lista-agendamentos .card p {
+    color: var(--cinza);
+    line-height: 1.7;
+}
+
+.lista-agendamentos .card strong {
+    color: var(--branco);
+}
+
+/* ===========================
+   CONTATO
+=========================== */
+#contato {
+    background: var(--preto-card);
+    border-top: 1px solid var(--borda);
+}
+
+.contato-grid {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.contato-item {
+    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contato-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.contato-item span,
+.contato-item a {
+    font-size: 15px;
+    color: var(--cinza);
+    line-height: 1.7;
+}
+
+.contato-item a:hover {
+    color: var(--dourado);
+}
+
+.contato-btns {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-whatsapp {
+    display: inline-block;
+    background: #25d366;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    transition: var(--transition);
+}
+
+.btn-whatsapp:hover {
+    background: #1fb558;
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+footer {
+    background: var(--preto);
+    border-top: 1px solid var(--borda);
+    padding: 48px 0;
+}
+
+.footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.footer-logo {
+    height: 40px;
+    width: auto;
+    opacity: 0.7;
+}
+
+footer p {
+    font-size: 13px;
+    color: var(--cinza);
+}
+
+.footer-end {
+    font-size: 12px;
+    color: var(--cinza);
+    opacity: 0.6;
+}
+
+/* ===========================
+   RESPONSIVO
+=========================== */
+@media (max-width: 768px) {
+    nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--preto);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        z-index: 99;
     }
 
-    nav{
-        flex-wrap:wrap;
-        justify-content:center;
+    nav.open {
+        display: flex;
     }
 
-    .logo img{
-        max-height:75px;
+    nav a {
+        font-size: 18px;
     }
 
-    .banner{
-        padding:30px;
-        justify-content:center;
-        text-align:center;
+    .menu-toggle {
+        display: flex;
+        z-index: 101;
     }
 
-    .conteudo-banner h1{
-        font-size:45px;
-        line-height:50px;
+    section {
+        padding: 72px 0;
     }
 
-    .conteudo-banner p{
-        font-size:18px;
+    .hero-content h1 {
+        font-size: 48px;
     }
 
-    .cards{
-        flex-direction:column;
-        align-items:center;
+    .servico-card {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    .card{
-        width:95%;
+    .servico-preco-acao {
+        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
     }
 
-    .agendamento-card{
-        flex-direction:column;
-        gap:15px;
-        text-align:center;
+    .form-agendamento {
+        padding: 24px 20px;
     }
 
-    button{
-        width:100%;
+    .horario-horas {
+        flex-direction: column;
+        gap: 4px;
     }
 
-    .btn-agendar{
-        width:100%;
-        text-align:center;
+    .separador {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-btns {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        text-align: center;
     }
 }
