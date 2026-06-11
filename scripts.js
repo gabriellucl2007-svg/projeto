@@ -84,8 +84,3 @@ function renderPainelBarbeiro(lista) {
     div.appendChild(el);
   });
 }
-
-// ===============================
-// INICIAL
-// ===============================
-renderizar();
