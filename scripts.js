@@ -137,3 +137,36 @@ async function historicoCliente(telefone) {
 
   return data || [];
 }
+
+document.getElementById("formAgendamento").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  console.log("FORM ENVIADO");
+
+  const nome = document.getElementById("nome").value;
+  const barbeiro = document.getElementById("barbeiro").value;
+  const servico = document.getElementById("servico").value;
+  const data = document.getElementById("data").value;
+  const hora = document.getElementById("hora").value;
+
+  const { error } = await supabaseClient
+    .from("agendamentos")
+    .insert([
+      {
+        cliente_nome: nome,
+        barbeiro: barbeiro,
+        servico: servico,
+        data: data,
+        hora: hora,
+        status: "confirmado"
+      }
+    ]);
+
+  if (error) {
+    console.log(error);
+    alert("Erro ao agendar");
+    return;
+  }
+
+  alert("Agendado com sucesso!");
+});
