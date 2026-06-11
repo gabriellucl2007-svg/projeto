@@ -30,7 +30,7 @@ function gerarHorarios() {
 const horariosPadrao = gerarHorarios();
 
 // =========================
-// VERIFICAR HORÁRIO
+// HORÁRIO DISPONÍVEL
 // =========================
 async function horarioDisponivel(barbeiro, data, hora) {
   const { data: agendamentos } = await window.supabaseClient
@@ -45,7 +45,7 @@ async function horarioDisponivel(barbeiro, data, hora) {
 }
 
 // =========================
-// FORM PRINCIPAL (ÚNICO SISTEMA)
+// FORM
 // =========================
 document.getElementById("formAgendamento").addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -64,7 +64,14 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     return;
   }
 
-  // checar disponibilidade
+  const { data: userData } = await window.supabaseClient.auth.getUser();
+  const user = userData.user;
+
+  if (!user) {
+    alert("Você precisa estar logado!");
+    return;
+  }
+
   const livre = await horarioDisponivel(barbeiro, data, hora);
 
   if (!livre) {
@@ -72,18 +79,19 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     return;
   }
 
-  await supabaseClient.from("agendamentos").insert([
-  {
-    nome,
-    telefone,
-    barbeiro,
-    servico,
-    data,
-    hora,
-    user_id: user.id,
-    status: "confirmado"
-  }
-]);
+  const { error } = await window.supabaseClient
+    .from("agendamentos")
+    .insert([
+      {
+        nome,
+        telefone,
+        barbeiro,
+        servico,
+        data,
+        hora,
+        user_id: user.id,
+        status: "confirmado"
+      }
     ]);
 
   if (error) {
@@ -100,7 +108,7 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
 // CANCELAR
 // =========================
 async function cancelarAgendamento(id) {
-  const { error } = await supabaseClient
+  const { error } = await window.supabaseClient
     .from("agendamentos")
     .update({ status: "cancelado" })
     .eq("id", id);
@@ -109,37 +117,13 @@ async function cancelarAgendamento(id) {
 }
 
 // =========================
-// AGENDA BARBEIRO
+// LOGIN
 // =========================
-async function agendaDoBarbeiro(barbeiro, data) {
-  const { data: agenda } = await supabaseClient
-    .from("agendamentos")
-    .select("*")
-    .eq("barbeiro", barbeiro)
-    .eq("data", data)
-    .neq("status", "cancelado");
-
-  return agenda || [];
-}
-
-// =========================
-// HISTÓRICO CLIENTE
-// =========================
-async function historicoCliente(telefone) {
-  const { data } = await supabaseClient
-    .from("agendamentos")
-    .select("*")
-    .eq("telefone", telefone)
-    .order("data", { ascending: false });
-
-  return data || [];
-}
-
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
+  const { data, error } = await window.supabaseClient.auth.signInWithPassword({
     email,
     password
   });
@@ -150,14 +134,4 @@ async function login() {
   }
 
   alert("Logado com sucesso!");
-  carregarAgendamentos();
 }
-
-const user = (await supabaseClient.auth.getUser()).data.user;
-
-const user = (await supabaseClient.auth.getUser()).data.user;
-
-const { data } = await supabaseClient
-  .from("agendamentos")
-  .select("*")
-  .eq("user_id", user.id);
