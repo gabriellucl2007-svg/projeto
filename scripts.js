@@ -65,34 +65,35 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
   }
 
   const { data: userData } = await window.supabaseClient.auth.getUser();
-  const user = userData.user;
+const user = userData.user;
 
-  if (!user) {
-    alert("Você precisa estar logado!");
-    return;
-  }
+if (!user) {
+  alert("Usuário não encontrado");
+  return;
+}
 
-  const livre = await horarioDisponivel(barbeiro, data, hora);
+const { error } = await window.supabaseClient
+  .from("agendamentos")
+  .insert([
+    {
+      nome,
+      telefone,
+      barbeiro,
+      servico,
+      data,
+      hora,
+      status: "confirmado",
+      user_id: user.id
+    }
+  ]);
 
-  if (!livre) {
-    alert("Horário já ocupado!");
-    return;
-  }
+if (error) {
+  console.log(error);
+  alert("Erro ao agendar");
+  return;
+}
 
-  const { error } = await window.supabaseClient
-    .from("agendamentos")
-    .insert([
-      {
-        nome,
-        telefone,
-        barbeiro,
-        servico,
-        data,
-        hora,
-        user_id: user.id,
-        status: "confirmado"
-      }
-    ]);
+alert("Agendado com sucesso!");
 
   if (error) {
     console.log(error);
