@@ -72,18 +72,18 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
     return;
   }
 
-  const { error } = await supabaseClient
-    .from("agendamentos")
-    .insert([
-      {
-        nome: nome,
-        telefone: telefone,
-        barbeiro: barbeiro,
-        servico: servico,
-        data: data,
-        hora: hora,
-        status: "confirmado"
-      }
+  await supabaseClient.from("agendamentos").insert([
+  {
+    nome,
+    telefone,
+    barbeiro,
+    servico,
+    data,
+    hora,
+    user_id: user.id,
+    status: "confirmado"
+  }
+]);
     ]);
 
   if (error) {
@@ -134,3 +134,30 @@ async function historicoCliente(telefone) {
 
   return data || [];
 }
+
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert("Erro no login");
+    return;
+  }
+
+  alert("Logado com sucesso!");
+  carregarAgendamentos();
+}
+
+const user = (await supabaseClient.auth.getUser()).data.user;
+
+const user = (await supabaseClient.auth.getUser()).data.user;
+
+const { data } = await supabaseClient
+  .from("agendamentos")
+  .select("*")
+  .eq("user_id", user.id);
