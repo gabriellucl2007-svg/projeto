@@ -5,8 +5,6 @@
 const supabaseUrl = "https://vsvlfkddhebxutugtniu.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8";
 
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
 // =========================
 // HORÁRIOS (30 EM 30 MIN)
 // =========================
