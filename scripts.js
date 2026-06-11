@@ -67,6 +67,7 @@ async function horariosLivres(barbeiro, data) {
 // =========================
 // CRIAR AGENDAMENTO
 // =========================
+console.log("AGENDAR FOI CHAMADO");
 async function criarAgendamento(cliente, telefone, barbeiro, servico, data, hora) {
 
   const livre = await horarioDisponivel(barbeiro, data, hora);
