@@ -1,3 +1,4 @@
+console.log("JS carregado");
 
 // =========================
 // HORÁRIOS (30 EM 30 MIN)
@@ -10,9 +11,7 @@ function gerarHorarios() {
     let m = 0;
 
     while (h < fim || (h === fim && m === 0)) {
-      horarios.push(
-        `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`
-      );
+      horarios.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
 
       m += 30;
       if (m === 60) {
@@ -22,10 +21,7 @@ function gerarHorarios() {
     }
   }
 
-  // manhã
   gerarPeriodo(8, 12);
-
-  // tarde/noite
   gerarPeriodo(13, 20);
 
   return horarios;
@@ -34,7 +30,7 @@ function gerarHorarios() {
 const horariosPadrao = gerarHorarios();
 
 // =========================
-// VERIFICAR HORÁRIO LIVRE
+// VERIFICAR HORÁRIO
 // =========================
 async function horarioDisponivel(barbeiro, data, hora) {
   const { data: agendamentos } = await supabaseClient
@@ -49,111 +45,39 @@ async function horarioDisponivel(barbeiro, data, hora) {
 }
 
 // =========================
-// PEGAR HORÁRIOS LIVRES
+// FORM PRINCIPAL (ÚNICO SISTEMA)
 // =========================
-async function horariosLivres(barbeiro, data) {
-  const { data: agendamentos } = await supabaseClient
-    .from("agendamentos")
-    .select("hora")
-    .eq("barbeiro", barbeiro)
-    .eq("data", data)
-    .neq("status", "cancelado");
-
-  const ocupados = (agendamentos || []).map(a => a.hora);
-
-  return horariosPadrao.filter(h => !ocupados.includes(h));
-}
-
-// =========================
-// CRIAR AGENDAMENTO
-// =========================
-console.log("AGENDAR FOI CHAMADO");
-async function criarAgendamento(cliente, telefone, barbeiro, servico, data, hora) {
-
-  const livre = await horarioDisponivel(barbeiro, data, hora);
-
-  if (!livre) {
-    alert("Horário já está ocupado!");
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from("agendamentos")
-    .insert([{
-      cliente_nome: cliente,
-      cliente_telefone: telefone,
-      barbeiro,
-      servico,
-      data,
-      hora,
-      status: "confirmado"
-    }]);
-
-  if (error) {
-    console.log(error);
-    alert("Erro ao criar agendamento");
-  } else {
-    alert("Agendamento realizado com sucesso!");
-  }
-}
-
-// =========================
-// CANCELAR AGENDAMENTO
-// =========================
-async function cancelarAgendamento(id) {
-  const { error } = await supabaseClient
-    .from("agendamentos")
-    .update({ status: "cancelado" })
-    .eq("id", id);
-
-  if (!error) {
-    alert("Agendamento cancelado!");
-  }
-}
-
-// =========================
-// AGENDA DO BARBEIRO
-// =========================
-async function agendaDoBarbeiro(barbeiro, data) {
-  const { data: agenda } = await supabaseClient
-    .from("agendamentos")
-    .select("*")
-    .eq("barbeiro", barbeiro)
-    .eq("data", data)
-    .neq("status", "cancelado");
-
-  return agenda || [];
-}
-
-// =========================
-// HISTÓRICO DO CLIENTE
-// =========================
-async function historicoCliente(telefone) {
-  const { data } = await supabaseClient
-    .from("agendamentos")
-    .select("*")
-    .eq("cliente_telefone", telefone)
-    .order("data", { ascending: false });
-
-  return data || [];
-}
-
 document.getElementById("formAgendamento").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   console.log("FORM ENVIADO");
 
   const nome = document.getElementById("nome").value;
+  const telefone = document.getElementById("telefone")?.value || "";
   const barbeiro = document.getElementById("barbeiro").value;
   const servico = document.getElementById("servico").value;
   const data = document.getElementById("data").value;
   const hora = document.getElementById("hora").value;
 
+  if (!nome || !barbeiro || !servico || !data || !hora) {
+    alert("Preencha tudo!");
+    return;
+  }
+
+  // checar disponibilidade
+  const livre = await horarioDisponivel(barbeiro, data, hora);
+
+  if (!livre) {
+    alert("Horário já ocupado!");
+    return;
+  }
+
   const { error } = await supabaseClient
     .from("agendamentos")
     .insert([
       {
-        cliente_nome: nome,
+        nome: nome,
+        telefone: telefone,
         barbeiro: barbeiro,
         servico: servico,
         data: data,
@@ -169,4 +93,44 @@ document.getElementById("formAgendamento").addEventListener("submit", async func
   }
 
   alert("Agendado com sucesso!");
+  this.reset();
 });
+
+// =========================
+// CANCELAR
+// =========================
+async function cancelarAgendamento(id) {
+  const { error } = await supabaseClient
+    .from("agendamentos")
+    .update({ status: "cancelado" })
+    .eq("id", id);
+
+  if (!error) alert("Cancelado!");
+}
+
+// =========================
+// AGENDA BARBEIRO
+// =========================
+async function agendaDoBarbeiro(barbeiro, data) {
+  const { data: agenda } = await supabaseClient
+    .from("agendamentos")
+    .select("*")
+    .eq("barbeiro", barbeiro)
+    .eq("data", data)
+    .neq("status", "cancelado");
+
+  return agenda || [];
+}
+
+// =========================
+// HISTÓRICO CLIENTE
+// =========================
+async function historicoCliente(telefone) {
+  const { data } = await supabaseClient
+    .from("agendamentos")
+    .select("*")
+    .eq("telefone", telefone)
+    .order("data", { ascending: false });
+
+  return data || [];
+}
