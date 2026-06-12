@@ -4,8 +4,10 @@
 
 const SUPABASE_URL = "https://vsvlfkddhebxutugtniu.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+if (!window._supabaseClient) {
+    window._supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+}
+const supabase = window._supabaseClient;
 // =============================================
 // INICIALIZAÇÃO (index.html)
 // =============================================
