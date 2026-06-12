@@ -1,3 +1,167 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #0f0f0f;
+  color: #fff;
+}
+
+/* =========================
+   LOGIN
+========================= */
+#loginBox {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #0f0f0f;
+  gap: 12px;
+}
+
+#loginBox h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #d4af37;
+}
+
+#loginBox input {
+  width: 280px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #1c1c1c;
+  color: #fff;
+}
+
+#loginBox button {
+  width: 280px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #d4af37;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#loginBox button:hover {
+  opacity: 0.8;
+}
+
+/* =========================
+   APP (SITE INTERNO)
+========================= */
+#app {
+  display: none;
+  padding: 20px;
+}
+
+/* =========================
+   TÍTULOS
+========================= */
+h1, h2, h3 {
+  color: #d4af37;
+}
+
+/* =========================
+   FORMULÁRIO
+========================= */
+form {
+  max-width: 500px;
+  margin: 30px auto;
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+  outline: none;
+}
+
+form label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #ccc;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #d4af37;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-submit:hover {
+  opacity: 0.85;
+}
+
+/* =========================
+   PAINEL / LISTA
+========================= */
+#painelConteudo,
+#listaAgendamentos {
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.card-agendamento {
+  background: #1c1c1c;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-left: 4px solid #d4af37;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 600px) {
+  #loginBox input,
+  #loginBox button {
+    width: 90%;
+  }
+
+  form {
+    width: 90%;
+  }
+}
+
+
+
+
 /* ===========================
    TOKENS
 =========================== */
