@@ -1,6 +1,5 @@
-
-// LOGIN
-aasync function login() {
+/ LOGIN
+async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
@@ -11,16 +10,34 @@ aasync function login() {
 
   if (error) {
     alert("Erro no login");
+    console.log(error);
     return;
   }
 
+  // login deu certo
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("app").style.display = "block";
 }
 
-  mostrarApp();
-}
+  async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
+  const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert("Erro no login");
+    console.log(error);
+    return;
+  }
+
+  // login deu certo
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}
 // =========================
 // MOSTRAR SITE
 // =========================
