@@ -231,6 +231,69 @@ async function cancelarAgendamento(id) {
         return;
     }
 
-    alert("Agendamento cancelado!");
-    await renderizar();
+    alert("Agendamento canceladoconsole.log("JS carregado");
+
+// LOGIN
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert("Erro no login");
+    console.log(error);
+    return;
+  }
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("app").style.display = "block";
 }
+
+// CADASTRO
+async function cadastro() {
+  const nome = document.getElementById("nomeCadastro").value;
+  const email = document.getElementById("emailCadastro").value;
+  const password = document.getElementById("passwordCadastro").value;
+
+  const { data, error } = await window.supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      data: { nome }
+    }
+  });
+
+  if (error) {
+    alert("Erro no cadastro");
+    console.log(error);
+    return;
+  }
+
+  alert("Conta criada! Agora faça login.");
+}
+
+// LOGOUT
+async function logout() {
+  await window.supabaseClient.auth.signOut();
+  document.getElementById("loginBox").style.display = "flex";
+  document.getElementById("app").style.display = "none";
+}
+
+// VERIFICAR LOGIN AO ABRIR SITE
+async function checkLogin() {
+  const { data } = await window.supabaseClient.auth.getUser();
+
+  if (data.user) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    document.getElementById("loginBox").style.display = "flex";
+    document.getElementById("app").style.display = "none";
+  }
+}
+
+checkLogin();
