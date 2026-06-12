@@ -7,7 +7,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 if (!window._supabaseClient) {
     window._supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
-const supabase = window._supabaseClient;
+var supabase = window._supabaseClient || (window._supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY));
 // =============================================
 // INICIALIZAÇÃO (index.html)
 // =============================================
