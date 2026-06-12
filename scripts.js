@@ -136,3 +136,46 @@ async function login() {
 
   alert("Logado com sucesso!");
 }
+
+const supabaseClient = supabase.createClient(
+  "https://vsvlfkddhebxutugtniu.supabase.co",
+  "SUA_ANON_KEY"
+);
+
+// 🔐 LOGIN
+async function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert("Erro no login");
+    return;
+  }
+
+  mostrarApp();
+}
+
+// ✔ MOSTRAR SITE
+function mostrarApp() {
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}
+
+// ✔ VERIFICAR AO ENTRAR NA PÁGINA
+async function verificarLogin() {
+  const { data } = await supabaseClient.auth.getUser();
+
+  if (data.user) {
+    mostrarApp();
+  } else {
+    document.getElementById("loginBox").style.display = "block";
+    document.getElementById("app").style.display = "none";
+  }
+}
+
+verificarLogin();
