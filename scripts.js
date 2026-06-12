@@ -1,12 +1,28 @@
 const supabase = window.supabaseClient;
+
+window.supabaseClient = supabase.createClient(
+  "https://SEU-PROJETO.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8"
+  
+);
 // LOGIN
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await window.supabaseClient.auth.signInWithPassword({
     email,
     password
+  });
+
+  if (error) {
+    alert("Erro no login");
+    console.log(error);
+    return;
+  }
+
+  alert("Logado com sucesso!");
+}
   });
 
   if (error) {
