@@ -1,10 +1,6 @@
-console.log("JS carregado");
-
 const supabase = window.supabaseClient;
 
-// =========================
 // LOGIN
-// =========================
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -15,9 +11,13 @@ async function login() {
   });
 
   if (error) {
-    alert("Erro no login");
+    alert("Email ou senha inválidos");
     return;
   }
+
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}
 
   mostrarApp();
 }
