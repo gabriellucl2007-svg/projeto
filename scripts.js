@@ -1,5 +1,4 @@
 const supabase = window.supabaseClient;
-
 // LOGIN
 async function login() {
   const email = document.getElementById("email").value;
