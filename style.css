@@ -728,171 +728,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .lista-agendamentos .card strong {
     color: var(--branco);
 }
-/* ================================
-   CALENDÁRIO E HORÁRIOS
-================================ */
 
-.calendario-container {
-    background: var(--preto-card);
-    border: 1px solid var(--borda);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
-}
-
-.calendario-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    text-align: center;
-}
-
-.calendario-header button {
-    background: transparent;
-    border: 1px solid var(--dourado);
-    color: var(--dourado);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.2s;
-}
-
-.calendario-header button:hover {
-    background: var(--dourado);
-    color: var(--preto);
-}
-
-.calendario-header h3 {
-    font-family: var(--font-display);
-    font-size: 24px;
-    color: var(--branco);
-    flex: 1;
-    margin: 0;
-}
-
-.calendario-dias {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    margin-bottom: 24px;
-}
-
-.calendario-dia-header {
-    text-align: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--dourado);
-    text-transform: uppercase;
-    padding: 8px;
-    letter-spacing: 0.1em;
-}
-
-.calendario-dia {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--borda);
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s;
-    color: var(--cinza);
-}
-
-.calendario-dia:hover:not(.desativado) {
-    border-color: var(--dourado);
-    color: var(--dourado);
-}
-
-.calendario-dia.selecionado {
-    background: var(--dourado);
-    color: var(--preto);
-    border-color: var(--dourado);
-}
-
-.calendario-dia.desativado {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-.horarios-container {
-    margin-top: 32px;
-}
-
-.horarios-secao {
-    margin-bottom: 32px;
-}
-
-.horarios-titulo {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--dourado);
-    margin-bottom: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.horarios-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
-}
-
-.horario-btn {
-    padding: 12px;
-    border: 2px solid var(--borda);
-    background: transparent;
-    color: var(--branco);
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 13px;
-    transition: all 0.2s;
-}
-
-.horario-btn:hover:not(:disabled) {
-    border-color: var(--dourado);
-    color: var(--dourado);
-}
-
-.horario-btn.selecionado {
-    background: var(--dourado);
-    color: var(--preto);
-    border-color: var(--dourado);
-}
-
-.horario-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    text-decoration: line-through;
-}
-
-.form-group-inline {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-@media (max-width: 600px) {
-    .calendario-dias {
-        grid-template-columns: repeat(7, 1fr);
-        gap: 6px;
-    }
-    .horarios-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    }
-    .form-group-inline {
-        grid-template-columns: 1fr;
-    }
-}
 /* ===========================
    CONTATO
 =========================== */
@@ -1624,4 +1460,262 @@ footer p {
     .form-group-inline {
         grid-template-columns: 1fr;
     }
+}
+
+/* ===========================
+   CALENDÁRIO
+=========================== */
+.cal-wrap {
+    background: var(--preto);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.cal-titulo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--branco);
+    font-weight: 700;
+}
+
+.cal-nav {
+    background: transparent;
+    border: 1px solid var(--borda);
+    color: var(--dourado);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    line-height: 1;
+}
+
+.cal-nav:hover {
+    background: var(--dourado);
+    color: var(--preto);
+    border-color: var(--dourado);
+}
+
+.cal-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 8px;
+}
+
+.cal-semana span {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dourado);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 0;
+}
+
+.cal-dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.cal-dia {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--branco);
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.cal-dia:hover:not(.cal-off) {
+    border-color: var(--dourado);
+    color: var(--dourado);
+}
+
+.cal-dia.cal-sel {
+    background: var(--dourado);
+    color: var(--preto);
+    font-weight: 700;
+    border-color: var(--dourado);
+}
+
+.cal-dia.cal-off {
+    color: #333;
+    cursor: not-allowed;
+}
+
+/* ===========================
+   HORÁRIOS BOTÕES
+=========================== */
+.hor-secao {
+    margin-bottom: 24px;
+}
+
+.hor-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hor-count {
+    font-size: 11px;
+    color: var(--cinza);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.hor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    gap: 8px;
+}
+
+.hor-btn {
+    padding: 12px 8px;
+    background: transparent;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: var(--font-body);
+}
+
+.hor-btn:hover:not(:disabled):not(.hor-ocu) {
+    border-color: var(--dourado);
+    color: var(--dourado);
+}
+
+.hor-btn.hor-sel {
+    background: var(--dourado);
+    color: var(--preto);
+    border-color: var(--dourado);
+}
+
+.hor-btn.hor-ocu,
+.hor-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+/* ===========================
+   VER AGENDAMENTOS
+=========================== */
+.btn-ver-agendamentos {
+    background: transparent;
+    border: 1px solid var(--borda);
+    color: var(--dourado);
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: var(--transition);
+    font-family: var(--font-body);
+}
+
+.btn-ver-agendamentos:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: var(--dourado);
+}
+
+/* ===========================
+   FOOTER ADMIN
+=========================== */
+.footer-admin {
+    font-size: 11px;
+    color: #2a2a2a;
+    margin-top: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.footer-admin:hover {
+    color: #555;
+}
+
+/* ===========================
+   LOGIN BOX
+=========================== */
+#loginBox, #adminLogin {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--preto);
+    z-index: 1000;
+}
+
+.login-card {
+    background: var(--preto-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.login-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.login-logo img { height: 48px; }
+.login-logo h2 { font-family: var(--font-display); font-size: 24px; color: var(--dourado); text-align: center; }
+
+.aba-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dourado);
+    text-align: center;
+}
+
+.troca-aba { text-align: center; font-size: 13px; color: var(--cinza); }
+.troca-aba a { color: var(--dourado); }
+.nav-sair { color: #e74c3c !important; }
+
+@media (max-width: 480px) {
+    .login-card { padding: 28px 20px; margin: 16px; }
+    .hor-grid { grid-template-columns: repeat(3, 1fr); }
+    .cal-dia { font-size: 12px; }
 }
