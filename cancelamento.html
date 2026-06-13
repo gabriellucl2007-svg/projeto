@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancelar Agendamento — Estação Barber</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f0f;
+            color: #f5f0e8;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: #1a1a1a;
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 16px;
+            padding: 48px 40px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 22px; color: #C9A84C; margin-bottom: 32px; }
+        .icon { font-size: 48px; margin-bottom: 16px; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 24px; color: #f5f0e8; margin-bottom: 12px; }
+        .info { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.15); border-radius: 10px; padding: 20px; margin: 24px 0; text-align: left; }
+        .info p { font-size: 14px; color: #aaa; margin-bottom: 8px; }
+        .info p:last-child { margin-bottom: 0; }
+        .info strong { color: #f5f0e8; }
+        .btn-cancelar {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .btn-cancelar:hover { opacity: 0.85; }
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 16px;
+            color: #888;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        .btn-voltar:hover { color: #C9A84C; }
+        .msg { padding: 16px; border-radius: 8px; font-size: 14px; margin-top: 16px; }
+        .msg.sucesso { background: rgba(46,204,113,0.1); border: 1px solid #2ecc71; color: #2ecc71; }
+        .msg.erro { background: rgba(231,76,60,0.1); border: 1px solid #e74c3c; color: #e74c3c; }
+        #loading { color: #888; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="logo">✂ Estação Barber</div>
+
+    <div id="loading">
+        <div class="icon">⏳</div>
+        <p>Carregando agendamento...</p>
+    </div>
+
+    <div id="conteudo" style="display:none;">
+        <div class="icon" id="icone">📅</div>
+        <h2 id="titulo">Cancelar Agendamento</h2>
+        <p id="subtitulo" style="color:#888; font-size:14px;">Tem certeza que deseja cancelar?</p>
+
+        <div class="info" id="infoAgendamento"></div>
+
+        <button class="btn-cancelar" id="btnCancelar" onclick="confirmarCancelamento()">
+            Confirmar Cancelamento
+        </button>
+        <br>
+        <a href="index.html" class="btn-voltar">← Voltar ao site</a>
+    </div>
+
+    <div id="mensagem"></div>
+</div>
+
+<script>
+    const SUPABASE_URL = "https://vsvlfkddhebxutugtniu.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8";
+    const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const params = new URLSearchParams(window.location.search);
+    const token  = params.get('token');
+    let agendamentoId = null;
+
+    async function carregarAgendamento() {
+        if (!token) {
+            mostrarErro('Link inválido ou expirado.');
+            return;
+        }
+
+        const { data, error } = await _sb
+            .from('agendamentos')
+            .select('*')
+            .eq('token_cancelamento', token)
+            .single();
+
+        document.getElementById('loading').style.display = 'none';
+
+        if (error || !data) {
+            mostrarErro('Agendamento não encontrado ou link expirado.');
+            return;
+        }
+
+        if (data.status === 'cancelado') {
+            document.getElementById('conteudo').style.display = 'block';
+            document.getElementById('icone').textContent = '✅';
+            document.getElementById('titulo').textContent = 'Já cancelado';
+            document.getElementById('subtitulo').textContent = 'Este agendamento já foi cancelado anteriormente.';
+            document.getElementById('infoAgendamento').innerHTML = montarInfo(data);
+            document.getElementById('btnCancelar').style.display = 'none';
+            return;
+        }
+
+        agendamentoId = data.id;
+        document.getElementById('conteudo').style.display = 'block';
+        document.getElementById('infoAgendamento').innerHTML = montarInfo(data);
+    }
+
+    function montarInfo(a) {
+        return `
+            <p>👤 <strong>${a.nome}</strong></p>
+            <p>✂️ Barbeiro: <strong>${a.barbeiro}</strong></p>
+            <p>💈 Serviço: <strong>${a.servico}</strong></p>
+            <p>📅 Data: <strong>${formatarData(a.data)}</strong></p>
+            <p>🕐 Horário: <strong>${a.hora}</strong></p>
+        `;
+    }
+
+    async function confirmarCancelamento() {
+        if (!agendamentoId) return;
+
+        document.getElementById('btnCancelar').textContent = 'Cancelando...';
+        document.getElementById('btnCancelar').disabled = true;
+
+        const { error } = await _sb
+            .from('agendamentos')
+            .update({ status: 'cancelado' })
+            .eq('id', agendamentoId);
+
+        if (error) {
+            mostrarErro('Erro ao cancelar. Tente novamente ou ligue: (37) 99861-9864');
+            document.getElementById('btnCancelar').textContent = 'Confirmar Cancelamento';
+            document.getElementById('btnCancelar').disabled = false;
+            return;
+        }
+
+        document.getElementById('icone').textContent = '✅';
+        document.getElementById('titulo').textContent = 'Cancelado com sucesso';
+        document.getElementById('subtitulo').textContent = 'Seu agendamento foi cancelado.';
+        document.getElementById('btnCancelar').style.display = 'none';
+    }
+
+    function mostrarErro(msg) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('mensagem').innerHTML = `<div class="msg erro">${msg}</div>`;
+    }
+
+    function formatarData(d) {
+        if (!d) return '';
+        const [a, m, dia] = d.split('-');
+        return `${dia}/${m}/${a}`;
+    }
+
+    carregarAgendamento();
+</script>
+</body>
+</html>
