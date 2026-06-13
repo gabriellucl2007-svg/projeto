@@ -5,496 +5,209 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin — Estação Barber</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ===== ADMIN ESPECÍFICO ===== */
-        .admin-page {
-            min-height: 100vh;
-            background: var(--preto);
-            padding: 0;
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--dourado:#C9A84C;--preto:#0f0f0f;--card:#1a1a1a;--borda:rgba(201,168,76,0.15);--cinza:#888;--branco:#f5f0e8}
+        body{font-family:'Inter',sans-serif;background:var(--preto);color:var(--branco);min-height:100vh}
 
-        .admin-header {
-            background: var(--preto-card);
-            border-bottom: 1px solid var(--borda);
-            padding: 20px 0;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+        /* LOGIN */
+        #adminLogin{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        .login-wrap{background:var(--card);border:1px solid var(--borda);border-radius:16px;padding:48px 40px;width:100%;max-width:380px;text-align:center}
+        .login-wrap h2{font-family:'Playfair Display',serif;color:var(--dourado);font-size:24px;margin-bottom:8px}
+        .login-wrap p{color:var(--cinza);font-size:13px;margin-bottom:28px}
+        .inp{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--borda);border-radius:8px;padding:12px 14px;color:var(--branco);font-size:14px;outline:none;margin-bottom:14px;transition:border-color .3s}
+        .inp:focus{border-color:var(--dourado)}
+        .btn-gold{background:linear-gradient(135deg,#C9A84C,#a8893d);border:none;color:var(--preto);padding:13px;border-radius:8px;font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;width:100%;transition:opacity .2s}
+        .btn-gold:hover{opacity:.9}
+        .erro-login{color:#e74c3c;font-size:13px;margin-top:10px}
 
-        .admin-header-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+        /* PAINEL */
+        #adminApp{display:none}
+        .adm-header{background:var(--card);border-bottom:1px solid var(--borda);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+        .adm-header h1{font-family:'Playfair Display',serif;color:var(--dourado);font-size:18px}
+        .btn-sair{background:transparent;border:1px solid #e74c3c;color:#e74c3c;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+        .btn-sair:hover{background:#e74c3c;color:#fff}
+        .adm-body{max-width:1100px;margin:0 auto;padding:32px 24px}
 
-        .admin-header-inner img {
-            height: 36px;
-        }
+        /* STATS */
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px}
+        .stat{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:20px;text-align:center}
+        .stat-n{font-family:'Playfair Display',serif;font-size:36px;color:var(--dourado);display:block}
+        .stat-l{font-size:11px;color:var(--cinza);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
 
-        .admin-titulo {
-            font-family: var(--font-display);
-            font-size: 18px;
-            color: var(--dourado);
-            letter-spacing: 0.05em;
-        }
+        /* FILTROS */
+        .filtros{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;align-items:flex-end}
+        .filtros label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dourado);display:block;margin-bottom:6px}
+        .filtros select,.filtros input{background:var(--card);border:1px solid var(--borda);border-radius:8px;padding:10px 12px;color:var(--branco);font-size:13px;outline:none;width:100%;appearance:none}
+        .filtros select:focus,.filtros input:focus{border-color:var(--dourado)}
+        .fg{flex:1;min-width:140px}
+        .btn-filtrar{background:var(--dourado);color:var(--preto);border:none;padding:10px 22px;border-radius:8px;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;align-self:flex-end}
 
-        .admin-btn-sair {
-            background: transparent;
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
-            padding: 8px 18px;
-            border-radius: var(--radius);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            letter-spacing: 0.05em;
-        }
+        /* TABELA */
+        .tabela-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--borda)}
+        table{width:100%;border-collapse:collapse;font-size:13px}
+        thead{background:var(--card)}
+        th{padding:13px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dourado);border-bottom:1px solid var(--borda);white-space:nowrap}
+        td{padding:13px 16px;color:var(--cinza);border-bottom:1px solid rgba(201,168,76,0.06);vertical-align:middle}
+        tbody tr:hover{background:var(--card)}
+        tbody tr:last-child td{border-bottom:none}
+        td strong{color:var(--branco)}
+        .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;text-transform:uppercase}
+        .badge-confirmado{background:rgba(46,204,113,.15);color:#2ecc71}
+        .badge-cancelado{background:rgba(231,76,60,.15);color:#e74c3c}
+        .btn-del{background:transparent;border:1px solid #e74c3c;color:#e74c3c;padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .2s}
+        .btn-del:hover{background:#e74c3c;color:#fff}
+        .vazio{text-align:center;padding:48px;color:var(--cinza)}
 
-        .admin-btn-sair:hover {
-            background: #e74c3c;
-            color: #fff;
-        }
-
-        .admin-body {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
-
-        /* Filtros */
-        .admin-filtros {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
-            align-items: flex-end;
-        }
-
-        .admin-filtros .form-group {
-            flex: 1;
-            min-width: 160px;
-        }
-
-        .admin-filtros .form-group label {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--dourado);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .admin-filtros select,
-        .admin-filtros input {
-            background: var(--preto-card);
-            border: 1px solid var(--borda);
-            border-radius: var(--radius);
-            padding: 12px 14px;
-            color: var(--branco);
-            font-family: var(--font-body);
-            font-size: 14px;
-            outline: none;
-            width: 100%;
-            transition: border-color var(--transition);
-            appearance: none;
-            -webkit-appearance: none;
-        }
-
-        .admin-filtros select:focus,
-        .admin-filtros input:focus {
-            border-color: var(--dourado);
-        }
-
-        .btn-filtrar {
-            background: var(--dourado);
-            color: var(--preto);
-            border: none;
-            padding: 12px 24px;
-            border-radius: var(--radius);
-            font-weight: 700;
-            font-size: 13px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
-            align-self: flex-end;
-        }
-
-        .btn-filtrar:hover {
-            background: var(--dourado-claro);
-        }
-
-        /* Estatísticas */
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: var(--preto-card);
-            border: 1px solid var(--borda);
-            border-radius: var(--radius-lg);
-            padding: 20px 24px;
-            text-align: center;
-        }
-
-        .stat-numero {
-            font-family: var(--font-display);
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--dourado);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--cinza);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 4px;
-        }
-
-        /* Tabela */
-        .admin-tabela-wrap {
-            overflow-x: auto;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--borda);
-        }
-
-        .admin-tabela {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        .admin-tabela thead {
-            background: var(--preto-card);
-        }
-
-        .admin-tabela th {
-            padding: 14px 16px;
-            text-align: left;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--dourado);
-            border-bottom: 1px solid var(--borda);
-            white-space: nowrap;
-        }
-
-        .admin-tabela td {
-            padding: 14px 16px;
-            color: var(--cinza);
-            border-bottom: 1px solid rgba(201,168,76,0.08);
-            vertical-align: middle;
-        }
-
-        .admin-tabela tr:last-child td {
-            border-bottom: none;
-        }
-
-        .admin-tabela tbody tr {
-            transition: background var(--transition);
-        }
-
-        .admin-tabela tbody tr:hover {
-            background: var(--preto-card);
-        }
-
-        .admin-tabela td strong {
-            color: var(--branco);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 99px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-
-        .badge-confirmado { background: rgba(46,204,113,0.15); color: #2ecc71; }
-        .badge-cancelado  { background: rgba(231,76,60,0.15);  color: #e74c3c; }
-        .badge-pendente   { background: rgba(241,196,15,0.15); color: #f1c40f; }
-
-        .btn-cancelar-admin {
-            background: transparent;
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
-            padding: 5px 12px;
-            border-radius: var(--radius);
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-cancelar-admin:hover {
-            background: #e74c3c;
-            color: #fff;
-        }
-
-        .admin-vazio {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--cinza);
-            font-size: 15px;
-        }
-
-        /* Login admin */
-        #adminLogin {
-            display: none;
-        }
-
-        #adminLogin .login-card {
-            max-width: 380px;
-        }
-
-        @media (max-width: 600px) {
-            .admin-filtros { flex-direction: column; }
-            .admin-tabela { font-size: 13px; }
-            .admin-tabela th, .admin-tabela td { padding: 10px 12px; }
-        }
+        @media(max-width:600px){.filtros{flex-direction:column}.adm-body{padding:20px 16px}}
     </style>
 </head>
 <body>
 
 <!-- LOGIN ADMIN -->
 <div id="adminLogin">
-    <div class="login-card">
-        <div class="login-logo">
-            <img src="logo.png" alt="Estação Barber" onerror="this.style.display='none'">
-            <h2>Estação Barber</h2>
-        </div>
-        <h3 class="aba-titulo">ACESSO ADMIN</h3>
-
-        <div class="form-group">
-            <label for="adminEmail">Email</label>
-            <input type="email" id="adminEmail" placeholder="admin@barbearia.com">
-        </div>
-        <div class="form-group">
-            <label for="adminPassword">Senha</label>
-            <input type="password" id="adminPassword" placeholder="••••••••">
-        </div>
-        <button onclick="loginAdmin()" class="btn-submit">Entrar como Admin</button>
-
-        <p class="troca-aba" style="margin-top:16px;">
-            <a href="index.html" style="color:var(--cinza);">← Voltar ao site</a>
-        </p>
+    <div class="login-wrap">
+        <h2>✂ Admin</h2>
+        <p>Painel da Estação Barber</p>
+        <input class="inp" type="password" id="senhaAdmin" placeholder="Senha de acesso" onkeydown="if(event.key==='Enter')verificarSenha()">
+        <button class="btn-gold" onclick="verificarSenha()">Entrar</button>
+        <div class="erro-login" id="erroLogin"></div>
     </div>
 </div>
 
-<!-- PAINEL ADMIN -->
-<div id="adminApp" style="display:none;" class="admin-page">
-
-    <div class="admin-header">
-        <div class="admin-header-inner">
-            <div style="display:flex; align-items:center; gap:16px;">
-                <img src="logo.png" alt="Estação Barber" onerror="this.style.display='none'">
-                <span class="admin-titulo">Painel Administrativo</span>
-            </div>
-            <div style="display:flex; gap:12px; align-items:center;">
-                <a href="index.html" style="font-size:13px; color:var(--cinza);">← Site</a>
-                <button onclick="fazerLogout()" class="admin-btn-sair">Sair</button>
-            </div>
+<!-- PAINEL -->
+<div id="adminApp">
+    <div class="adm-header">
+        <h1>✂ Estação Barber — Admin</h1>
+        <div style="display:flex;gap:12px;align-items:center">
+            <a href="index.html" style="font-size:13px;color:var(--cinza);text-decoration:none">← Site</a>
+            <button class="btn-sair" onclick="sair()">Sair</button>
         </div>
     </div>
 
-    <div class="admin-body">
+    <div class="adm-body">
 
-        <!-- Estatísticas -->
-        <div class="admin-stats" id="adminStats">
-            <div class="stat-card">
-                <span class="stat-numero" id="statTotal">—</span>
-                <span class="stat-label">Total de Agendamentos</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-numero" id="statHoje">—</span>
-                <span class="stat-label">Hoje</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-numero" id="statJoao">—</span>
-                <span class="stat-label">João</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-numero" id="statMatheus">—</span>
-                <span class="stat-label">Matheus</span>
-            </div>
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat"><span class="stat-n" id="stTotal">—</span><span class="stat-l">Total</span></div>
+            <div class="stat"><span class="stat-n" id="stHoje">—</span><span class="stat-l">Hoje</span></div>
+            <div class="stat"><span class="stat-n" id="stJoao">—</span><span class="stat-l">João</span></div>
+            <div class="stat"><span class="stat-n" id="stMatheus">—</span><span class="stat-l">Matheus</span></div>
         </div>
 
         <!-- Filtros -->
-        <div class="admin-filtros">
-            <div class="form-group">
-                <label>Barbeiro</label>
-                <select id="filtroBarbeiro">
-                    <option value="">Todos</option>
-                    <option value="João">João</option>
-                    <option value="Matheus">Matheus</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Data</label>
-                <input type="date" id="filtroData">
-            </div>
-            <div class="form-group">
-                <label>Status</label>
-                <select id="filtroStatus">
-                    <option value="">Todos</option>
-                    <option value="confirmado">Confirmado</option>
-                    <option value="cancelado">Cancelado</option>
-                </select>
-            </div>
-            <button class="btn-filtrar" onclick="carregarAgendamentosAdmin()">Filtrar</button>
+        <div class="filtros">
+            <div class="fg"><label>Barbeiro</label><select id="fBarbeiro"><option value="">Todos</option><option>João</option><option>Matheus</option></select></div>
+            <div class="fg"><label>Data</label><input type="date" id="fData"></div>
+            <div class="fg"><label>Status</label><select id="fStatus"><option value="">Todos</option><option value="confirmado">Confirmado</option><option value="cancelado">Cancelado</option></select></div>
+            <button class="btn-filtrar" onclick="carregar()">Filtrar</button>
         </div>
 
         <!-- Tabela -->
-        <div class="admin-tabela-wrap">
-            <table class="admin-tabela">
+        <div class="tabela-wrap">
+            <table>
                 <thead>
                     <tr>
                         <th>Cliente</th>
+                        <th>Email</th>
                         <th>Barbeiro</th>
                         <th>Serviço</th>
                         <th>Data</th>
-                        <th>Horário</th>
+                        <th>Hora</th>
                         <th>Status</th>
                         <th>Ação</th>
                     </tr>
                 </thead>
-                <tbody id="adminTabela">
-                    <tr><td colspan="7" class="admin-vazio">Carregando...</td></tr>
-                </tbody>
+                <tbody id="tbody"><tr><td colspan="8" class="vazio">Carregando...</td></tr></tbody>
             </table>
         </div>
-
     </div>
 </div>
 
-<script src="scripts.js"></script>
 <script>
-    // Inicialização da página admin
-    document.addEventListener("DOMContentLoaded", async () => {
-        const { data } = await supabase.auth.getSession();
-        if (data.session) {
-            document.getElementById("adminLogin").style.display = "none";
-            document.getElementById("adminApp").style.display = "block";
-            await carregarAgendamentosAdmin();
+    const SENHA_ADMIN = "admin";
+    const SUPABASE_URL = "https://vsvlfkddhebxutugtniu.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8";
+    const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function verificarSenha() {
+        const s = document.getElementById('senhaAdmin').value;
+        if (s === SENHA_ADMIN) {
+            sessionStorage.setItem('adminOk', '1');
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('adminApp').style.display = 'block';
+            carregar();
         } else {
-            document.getElementById("adminLogin").style.display = "flex";
-            document.getElementById("adminApp").style.display = "none";
+            document.getElementById('erroLogin').textContent = 'Senha incorreta.';
         }
-    });
-
-    async function loginAdmin() {
-        const email = document.getElementById("adminEmail").value.trim();
-        const password = document.getElementById("adminPassword").value;
-
-        if (!email || !password) { alert("Preencha email e senha."); return; }
-
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) { alert("Email ou senha incorretos."); return; }
-
-        document.getElementById("adminLogin").style.display = "none";
-        document.getElementById("adminApp").style.display = "block";
-        await carregarAgendamentosAdmin();
     }
 
-    async function carregarAgendamentosAdmin() {
-        const barbeiro = document.getElementById("filtroBarbeiro").value;
-        const data = document.getElementById("filtroData").value;
-        const status = document.getElementById("filtroStatus").value;
-
-        let query = supabase
-            .from("agendamentos")
-            .select("*")
-            .order("data", { ascending: true })
-            .order("hora", { ascending: true });
-
-        if (barbeiro) query = query.eq("barbeiro", barbeiro);
-        if (data)     query = query.eq("data", data);
-        if (status)   query = query.eq("status", status);
-
-        const { data: agendamentos, error } = await query;
-
-        if (error) {
-            console.error(error);
-            document.getElementById("adminTabela").innerHTML =
-                '<tr><td colspan="7" class="admin-vazio">Erro ao carregar dados.</td></tr>';
-            return;
-        }
-
-        atualizarEstatisticas(agendamentos);
-        renderizarTabela(agendamentos);
+    function sair() {
+        sessionStorage.removeItem('adminOk');
+        location.reload();
     }
 
-    function atualizarEstatisticas(agendamentos) {
-        const hoje = new Date().toISOString().split("T")[0];
-        document.getElementById("statTotal").textContent   = agendamentos.length;
-        document.getElementById("statHoje").textContent    = agendamentos.filter(a => a.data === hoje).length;
-        document.getElementById("statJoao").textContent    = agendamentos.filter(a => a.barbeiro === "João").length;
-        document.getElementById("statMatheus").textContent = agendamentos.filter(a => a.barbeiro === "Matheus").length;
+    if (sessionStorage.getItem('adminOk') === '1') {
+        document.getElementById('adminLogin').style.display = 'none';
+        document.getElementById('adminApp').style.display = 'block';
+        carregar();
     }
 
-    function renderizarTabela(agendamentos) {
-        const tbody = document.getElementById("adminTabela");
+    async function carregar() {
+        const barbeiro = document.getElementById('fBarbeiro').value;
+        const data     = document.getElementById('fData').value;
+        const status   = document.getElementById('fStatus').value;
 
-        if (!agendamentos || agendamentos.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="admin-vazio">Nenhum agendamento encontrado.</td></tr>';
-            return;
-        }
+        let q = _sb.from('agendamentos').select('*').order('data',{ascending:true}).order('hora',{ascending:true});
+        if (barbeiro) q = q.eq('barbeiro', barbeiro);
+        if (data)     q = q.eq('data', data);
+        if (status)   q = q.eq('status', status);
 
-        tbody.innerHTML = agendamentos.map(a => `
+        const { data: rows, error } = await q;
+        if (error) { document.getElementById('tbody').innerHTML='<tr><td colspan="8" class="vazio">Erro ao carregar.</td></tr>'; return; }
+
+        atualizarStats(rows);
+        renderTabela(rows);
+    }
+
+    function atualizarStats(rows) {
+        const hoje = new Date().toISOString().split('T')[0];
+        document.getElementById('stTotal').textContent   = rows.length;
+        document.getElementById('stHoje').textContent    = rows.filter(r=>r.data===hoje).length;
+        document.getElementById('stJoao').textContent    = rows.filter(r=>r.barbeiro==='João').length;
+        document.getElementById('stMatheus').textContent = rows.filter(r=>r.barbeiro==='Matheus').length;
+    }
+
+    function renderTabela(rows) {
+        const tb = document.getElementById('tbody');
+        if (!rows || !rows.length) { tb.innerHTML='<tr><td colspan="8" class="vazio">Nenhum agendamento.</td></tr>'; return; }
+        tb.innerHTML = rows.map(r=>`
             <tr>
-                <td><strong>${a.nome}</strong></td>
-                <td>${a.barbeiro}</td>
-                <td>${a.servico}</td>
-                <td>${formatarData(a.data)}</td>
-                <td>${a.hora}</td>
-                <td>
-                    <span class="badge badge-${a.status || 'confirmado'}">
-                        ${a.status || 'confirmado'}
-                    </span>
-                </td>
-                <td>
-                    ${a.status !== 'cancelado'
-                        ? `<button class="btn-cancelar-admin" onclick="cancelarAdmin(${a.id})">Cancelar</button>`
-                        : '—'
-                    }
-                </td>
+                <td><strong>${r.nome}</strong></td>
+                <td>${r.email_cliente||'—'}</td>
+                <td>${r.barbeiro}</td>
+                <td>${r.servico}</td>
+                <td>${fmt(r.data)}</td>
+                <td>${r.hora}</td>
+                <td><span class="badge badge-${r.status||'confirmado'}">${r.status||'confirmado'}</span></td>
+                <td>${r.status!=='cancelado'?`<button class="btn-del" onclick="cancelarAdmin(${r.id})">Cancelar</button>`:'—'}</td>
             </tr>
-        `).join("");
+        `).join('');
     }
 
     async function cancelarAdmin(id) {
-        if (!confirm("Cancelar este agendamento?")) return;
+        if (!confirm('Cancelar este agendamento?')) return;
+        await _sb.from('agendamentos').update({status:'cancelado'}).eq('id',id);
+        carregar();
+    }
 
-        const { error } = await supabase
-            .from("agendamentos")
-            .delete()
-            .eq("id", id);
-
-        if (error) { alert("Erro ao cancelar."); return; }
-
-        await carregarAgendamentosAdmin();
+    function fmt(d) {
+        if (!d) return '';
+        const [a,m,dia]=d.split('-');
+        return `${dia}/${m}/${a}`;
     }
 </script>
-
 </body>
 </html>
