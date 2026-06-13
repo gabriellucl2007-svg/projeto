@@ -147,3 +147,7 @@ function formatarData(d) {
     const [a, m, dia] = d.split('-');
     return `${dia}/${m}/${a}`;
 }
+
+const EMAILJS_SERVICE  = "service_adfhhbl";
+const EMAILJS_TEMPLATE = "template_6h7955l";
+const EMAILJS_PUBLIC   = "uAeU1pmkfahwGGcbd";
