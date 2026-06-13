@@ -520,62 +520,76 @@ section {
     color: var(--preto);
 }
 
-/* ===========================
-   HORÁRIOS
-=========================== */
+/* ===== HORÁRIOS ===== */
+
 #horarios {
-    background: var(--preto);
-    border-top: 1px solid var(--borda);
+    padding: 100px 0;
 }
 
 .horarios-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    max-width: 700px;
-    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
 }
 
 .horario-card {
-    background: var(--preto-card);
-    border: 1px solid var(--borda);
-    border-radius: var(--radius-lg);
-    padding: 32px;
+    background: #111;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    padding: 35px 25px;
     text-align: center;
+    transition: 0.3s;
 }
 
-.horario-card.fechado {
-    opacity: 0.5;
+.horario-card:hover {
+    border-color: #D4AF37;
+    transform: translateY(-5px);
 }
 
 .horario-dia {
     display: block;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+    color: #D4AF37;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--dourado);
-    margin-bottom: 16px;
+    margin-bottom: 25px;
 }
 
 .horario-horas {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     gap: 12px;
-    flex-wrap: wrap;
 }
 
 .horario-horas span {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--branco);
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
 }
 
 .separador {
-    color: var(--dourado) !important;
-    font-size: 16px !important;
+    color: #D4AF37 !important;
+    font-size: 22px !important;
+}
+
+.horario-card.fechado .horario-horas span {
+    color: #777;
+    font-size: 32px;
+}
+
+@media (max-width: 768px) {
+    .horarios-grid {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+        margin: 40px auto 0;
+    }
+
+    .horario-horas span {
+        font-size: 24px;
+    }
 }
 
 /* ===========================
