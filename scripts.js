@@ -6,10 +6,9 @@ const SUPABASE_URL = "https://vsvlfkddhebxutugtniu.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8";
 
 // EmailJS — substitua com suas chaves em emailjs.com
-const EMAILJS_SERVICE  = "SEU_SERVICE_ID";
-const EMAILJS_TEMPLATE = "SEU_TEMPLATE_ID";
-const EMAILJS_PUBLIC   = "SUA_PUBLIC_KEY";
-
+const EMAILJS_SERVICE  = "service_adfhhbl";
+const EMAILJS_TEMPLATE = "template_6h7955l";
+const EMAILJS_PUBLIC   = "uAeU1pmkfahwGGcbd";
 // URL base do site (para link de cancelamento)
 const SITE_URL = "https://gabriellucl2007-svg.github.io/projeto";
 
@@ -128,9 +127,7 @@ async function enviarEmail(emailCliente, nome, barbeiro, servico, data, hora, li
     } catch (err) {
         console.error("Erro ao enviar email:", err);
 
-        const EMAILJS_SERVICE  = "service_adfhhbl";
-const EMAILJS_TEMPLATE = "template_6h7955l";
-const EMAILJS_PUBLIC   = "uAeU1pmkfahwGGcbd";
+    
         // Não bloqueia o agendamento se o email falhar
     }
 }
