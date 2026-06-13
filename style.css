@@ -728,7 +728,171 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .lista-agendamentos .card strong {
     color: var(--branco);
 }
+/* ================================
+   CALENDÁRIO E HORÁRIOS
+================================ */
 
+.calendario-container {
+    background: var(--preto-card);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.calendario-header button {
+    background: transparent;
+    border: 1px solid var(--dourado);
+    color: var(--dourado);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s;
+}
+
+.calendario-header button:hover {
+    background: var(--dourado);
+    color: var(--preto);
+}
+
+.calendario-header h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--branco);
+    flex: 1;
+    margin: 0;
+}
+
+.calendario-dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.calendario-dia-header {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--dourado);
+    text-transform: uppercase;
+    padding: 8px;
+    letter-spacing: 0.1em;
+}
+
+.calendario-dia {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+    color: var(--cinza);
+}
+
+.calendario-dia:hover:not(.desativado) {
+    border-color: var(--dourado);
+    color: var(--dourado);
+}
+
+.calendario-dia.selecionado {
+    background: var(--dourado);
+    color: var(--preto);
+    border-color: var(--dourado);
+}
+
+.calendario-dia.desativado {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.horarios-container {
+    margin-top: 32px;
+}
+
+.horarios-secao {
+    margin-bottom: 32px;
+}
+
+.horarios-titulo {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dourado);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.horario-btn {
+    padding: 12px;
+    border: 2px solid var(--borda);
+    background: transparent;
+    color: var(--branco);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.horario-btn:hover:not(:disabled) {
+    border-color: var(--dourado);
+    color: var(--dourado);
+}
+
+.horario-btn.selecionado {
+    background: var(--dourado);
+    color: var(--preto);
+    border-color: var(--dourado);
+}
+
+.horario-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.form-group-inline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .calendario-dias {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+    }
+    .horarios-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+    .form-group-inline {
+        grid-template-columns: 1fr;
+    }
+}
 /* ===========================
    CONTATO
 =========================== */
