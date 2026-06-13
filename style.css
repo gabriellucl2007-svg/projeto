@@ -520,101 +520,62 @@ section {
     color: var(--preto);
 }
 
-/* ===== HORÁRIOS ===== */
-
+/* ===========================
+   HORÁRIOS
+=========================== */
 #horarios {
-    padding: 100px 0;
-}
-.horario-btn {
-    height: 48px;
-    border: 1px solid var(--borda);
-    background: var(--preto-card);
-    color: var(--branco);
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s ease;
+    background: var(--preto);
+    border-top: 1px solid var(--borda);
 }
 
-.horario-btn:hover:not(:disabled) {
-    border-color: var(--dourado);
-    color: var(--dourado);
-}
-
-.horario-btn.selecionado {
-    background: var(--dourado);
-    color: var(--preto);
-    border-color: var(--dourado);
-}
-
-.horario-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-    text-decoration: line-through;
-}
-.horarios-botoes {
+.horarios-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
-}
-.horario-card {
-    background: #111;
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    border-radius: 12px;
-    padding: 35px 25px;
-    text-align: center;
-    transition: 0.3s;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-.horario-card:hover {
-    border-color: #D4AF37;
-    transform: translateY(-5px);
+.horario-card {
+    background: var(--preto-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    text-align: center;
+}
+
+.horario-card.fechado {
+    opacity: 0.5;
 }
 
 .horario-dia {
     display: block;
-    color: #D4AF37;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 25px;
+    color: var(--dourado);
+    margin-bottom: 16px;
 }
 
 .horario-horas {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .horario-horas span {
-    color: #fff;
-    font-size: 28px;
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--branco);
 }
 
 .separador {
-    color: #D4AF37 !important;
-    font-size: 22px !important;
-}
-
-.horario-card.fechado .horario-horas span {
-    color: #777;
-    font-size: 32px;
-}
-
-@media (max-width: 768px) {
-    .horarios-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 12px;
-    width: 100%;
-}
-
-    .horario-horas span {
-        font-size: 24px;
-    }
+    color: var(--dourado) !important;
+    font-size: 16px !important;
 }
 
 /* ===========================
@@ -655,12 +616,18 @@ section {
 }
 
 .agendamento-wrapper {
-    max-width: 800px;
+    max-width: 560px;
+    margin: 0 auto;
 }
 
-..form-agendamento {
+.form-agendamento {
+    background: var(--preto-card);
+    border: 1px solid var(--borda);
+    border-radius: var(--radius-lg);
     padding: 40px;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .form-group {
