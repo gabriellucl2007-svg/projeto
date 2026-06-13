@@ -532,7 +532,13 @@ section {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.horario-btn {
+    width: 85px;
 }
 
 .horario-card {
