@@ -10,173 +10,9 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <style>
-        .calendario-container {
-            background: var(--preto-card);
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .calendario-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .calendario-header button {
-            background: transparent;
-            border: 1px solid var(--dourado);
-            color: var(--dourado);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.2s;
-        }
-
-        .calendario-header button:hover {
-            background: var(--dourado);
-            color: var(--preto);
-        }
-
-        .calendario-header h3 {
-            font-family: var(--font-display);
-            font-size: 24px;
-            color: var(--branco);
-            flex: 1;
-            margin: 0;
-        }
-
-        .calendario-dias {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .calendario-dia-header {
-            text-align: center;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--dourado);
-            text-transform: uppercase;
-            padding: 8px;
-            letter-spacing: 0.1em;
-        }
-
-        .calendario-dia {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--borda);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s;
-            color: var(--cinza);
-        }
-
-        .calendario-dia:hover:not(.desativado) {
-            border-color: var(--dourado);
-            color: var(--dourado);
-        }
-
-        .calendario-dia.selecionado {
-            background: var(--dourado);
-            color: var(--preto);
-            border-color: var(--dourado);
-        }
-
-        .calendario-dia.desativado {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .horarios-container {
-            margin-top: 32px;
-        }
-
-        .horarios-secao {
-            margin-bottom: 32px;
-        }
-
-        .horarios-titulo {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--dourado);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .horarios-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 10px;
-        }
-
-        .horario-btn {
-            padding: 12px;
-            border: 2px solid var(--borda);
-            background: transparent;
-            color: var(--branco);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            transition: all 0.2s;
-        }
-
-        .horario-btn:hover:not(:disabled) {
-            border-color: var(--dourado);
-            color: var(--dourado);
-        }
-
-        .horario-btn.selecionado {
-            background: var(--dourado);
-            color: var(--preto);
-            border-color: var(--dourado);
-        }
-
-        .horario-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            text-decoration: line-through;
-        }
-
-        .form-group-inline {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        @media (max-width: 600px) {
-            .calendario-dias {
-                grid-template-columns: repeat(7, 1fr);
-                gap: 6px;
-            }
-            .horarios-grid {
-                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            }
-            .form-group-inline {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header id="header">
     <div class="header-inner">
         <div class="logo"><img src="logo.png" alt="Estação Barber"></div>
@@ -192,7 +28,6 @@
     </div>
 </header>
 
-<!-- HERO -->
 <section class="hero" id="inicio">
     <div class="hero-bg">
         <img src="fundo.png" alt="Estação Barber">
@@ -210,7 +45,6 @@
     <div class="hero-scroll"><span>Role para baixo</span><div class="scroll-line"></div></div>
 </section>
 
-<!-- SERVIÇOS -->
 <section id="servicos">
     <div class="container">
         <div class="section-header">
@@ -234,7 +68,6 @@
     </div>
 </section>
 
-<!-- EQUIPE -->
 <section id="equipe">
     <div class="container">
         <div class="section-header">
@@ -243,32 +76,17 @@
         </div>
         <div class="equipe-grid">
             <div class="barbeiro-card">
-                <div class="barbeiro-foto">
-                    <img src="joao.jpg" alt="João" onerror="this.style.display='none'">
-                    <div class="foto-placeholder">J</div>
-                </div>
-                <div class="barbeiro-info">
-                    <h3>João</h3>
-                    <p>Profissional especializado em cortes modernos e atendimento de qualidade.</p>
-                    <a href="#agendamento" class="btn-agendar-barbeiro">Agendar com João</a>
-                </div>
+                <div class="barbeiro-foto"><img src="joao.jpg" alt="João" onerror="this.style.display='none'"><div class="foto-placeholder">J</div></div>
+                <div class="barbeiro-info"><h3>João</h3><p>Profissional especializado em cortes modernos e atendimento de qualidade.</p><a href="#agendamento" class="btn-agendar-barbeiro">Agendar com João</a></div>
             </div>
             <div class="barbeiro-card">
-                <div class="barbeiro-foto">
-                    <img src="matheus.jpg" alt="Matheus" onerror="this.style.display='none'">
-                    <div class="foto-placeholder">M</div>
-                </div>
-                <div class="barbeiro-info">
-                    <h3>Matheus</h3>
-                    <p>Profissional especializado em cortes modernos e atendimento de qualidade.</p>
-                    <a href="#agendamento" class="btn-agendar-barbeiro">Agendar com Matheus</a>
-                </div>
+                <div class="barbeiro-foto"><img src="matheus.jpg" alt="Matheus" onerror="this.style.display='none'"><div class="foto-placeholder">M</div></div>
+                <div class="barbeiro-info"><h3>Matheus</h3><p>Profissional especializado em cortes modernos e atendimento de qualidade.</p><a href="#agendamento" class="btn-agendar-barbeiro">Agendar com Matheus</a></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- HORÁRIOS -->
 <section id="horarios">
     <div class="container">
         <div class="section-header">
@@ -276,19 +94,24 @@
             <h2>Horários</h2>
         </div>
         <div class="horarios-grid">
-            <div class="horario-card">
-                <span class="horario-dia">Segunda — Sábado</span>
-                <div class="horario-horas"><span>08:00 — 12:00</span><span class="separador">·</span><span>13:00 — 20:00</span></div>
-            </div>
-            <div class="horario-card fechado">
-                <span class="horario-dia">Domingo</span>
-                <div class="horario-horas"><span>Fechado</span></div>
-            </div>
+            <div class="horario-card"><span class="horario-dia">Segunda — Sábado</span><div class="horario-horas"><span>08:00 — 12:00</span><span class="separador">·</span><span>13:00 — 20:00</span></div></div>
+            <div class="horario-card fechado"><span class="horario-dia">Domingo</span><div class="horario-horas"><span>Fechado</span></div></div>
         </div>
     </div>
 </section>
 
-<!-- AGENDAMENTO -->
+<section id="pagamentos">
+    <div class="container">
+        <div class="section-header"><span class="section-label">Como pagar</span><h2>Formas de Pagamento</h2></div>
+        <div class="pagamentos-grid">
+            <div class="pagamento-item"><span class="pagamento-icon">◈</span><span>Pix</span></div>
+            <div class="pagamento-item"><span class="pagamento-icon">◈</span><span>Dinheiro</span></div>
+            <div class="pagamento-item"><span class="pagamento-icon">◈</span><span>Débito</span></div>
+            <div class="pagamento-item"><span class="pagamento-icon">◈</span><span>Crédito</span></div>
+        </div>
+    </div>
+</section>
+
 <section id="agendamento">
     <div class="container">
         <div class="section-header">
@@ -297,7 +120,7 @@
         </div>
         <div class="agendamento-wrapper">
             <form id="formAgendamento" class="form-agendamento">
-                
+
                 <div class="form-group-inline">
                     <div class="form-group">
                         <label for="nome">Seu nome</label>
@@ -339,13 +162,12 @@
                 </div>
 
                 <!-- CALENDÁRIO -->
-                <div class="calendario-container">
+                <div class="calendario-container" id="calendarioContainer" style="display:none;">
                     <div class="calendario-header">
-                        <button onclick="mesAnterior()">‹</button>
+                        <button type="button" onclick="mesAnterior()">&#8249;</button>
                         <h3 id="mesAno"></h3>
-                        <button onclick="mesProximo()">›</button>
+                        <button type="button" onclick="mesProximo()">&#8250;</button>
                     </div>
-
                     <div class="calendario-dias" id="calendarioDias"></div>
                 </div>
 
@@ -354,17 +176,23 @@
                     <div class="horarios-secao">
                         <div class="horarios-titulo">
                             Manhã
-                            <span id="contManha" style="font-size:12px;color:#888;font-weight:400">— horários disponíveis</span>
+                            <span id="contManha" class="horarios-count"></span>
                         </div>
                         <div class="horarios-grid" id="horariosManha"></div>
                     </div>
-
                     <div class="horarios-secao">
                         <div class="horarios-titulo">
                             Tarde
-                            <span id="contTarde" style="font-size:12px;color:#888;font-weight:400">— horários disponíveis</span>
+                            <span id="contTarde" class="horarios-count"></span>
                         </div>
                         <div class="horarios-grid" id="horariosTarde"></div>
+                    </div>
+                    <div class="horarios-secao">
+                        <div class="horarios-titulo">
+                            Noite
+                            <span id="contNoite" class="horarios-count"></span>
+                        </div>
+                        <div class="horarios-grid" id="horariosNoite"></div>
                     </div>
                 </div>
 
@@ -375,23 +203,16 @@
             </form>
 
             <div style="margin-top:24px;">
-                <button onclick="verMeusAgendamentos()" style="background:transparent;border:1px solid rgba(201,168,76,0.3);color:#C9A84C;padding:10px 20px;border-radius:4px;font-size:13px;cursor:pointer;width:100%;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;">
-                    Ver meus agendamentos
-                </button>
+                <button onclick="verMeusAgendamentos()" class="btn-ver-agendamentos">Ver meus agendamentos</button>
             </div>
             <div id="listaAgendamentos" style="margin-top:20px;"></div>
-
         </div>
     </div>
 </section>
 
-<!-- CONTATO -->
 <section id="contato">
     <div class="container">
-        <div class="section-header">
-            <span class="section-label">Fale conosco</span>
-            <h2>Contato</h2>
-        </div>
+        <div class="section-header"><span class="section-label">Fale conosco</span><h2>Contato</h2></div>
         <div class="contato-grid">
             <div class="contato-info">
                 <div class="contato-item">
@@ -412,14 +233,13 @@
     </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
     <div class="container">
         <div class="footer-inner">
             <img src="logo.png" alt="Estação Barber" class="footer-logo">
             <p>© 2026 Estação Barber — Todos os direitos reservados</p>
             <p class="footer-end">Lagoa da Prata, MG</p>
-            <a href="admin.html" style="font-size:11px;color:#333;margin-top:8px;letter-spacing:0.1em;text-transform:uppercase;">Acesso Restrito</a>
+            <a href="admin.html" class="footer-admin">Acesso Restrito</a>
         </div>
     </div>
 </footer>
@@ -429,115 +249,93 @@
     let mesAtual = new Date();
     let dataSelecionada = null;
 
+    const MANHA = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30"];
+    const TARDE = ["13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30"];
+    const NOITE = ["18:00","18:30","19:00","19:30"];
+
     function atualizarCalendario() {
         const barbeiro = document.getElementById("barbeiro").value;
+        const container = document.getElementById("calendarioContainer");
         if (!barbeiro) {
+            container.style.display = "none";
             document.getElementById("horariosContainer").style.display = "none";
             return;
         }
+        container.style.display = "block";
         renderCalendario();
     }
 
     function renderCalendario() {
         const ano = mesAtual.getFullYear();
         const mes = mesAtual.getMonth();
-        
-        document.getElementById("mesAno").textContent = mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase());
 
-        const primeiroDia = new Date(ano, mes, 1);
-        const ultimoDia = new Date(ano, mes + 1, 0);
-        const diasMes = ultimoDia.getDate();
-        const diaInicio = primeiroDia.getDay();
+        document.getElementById("mesAno").textContent =
+            mesAtual.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+                    .replace(/^\w/, c => c.toUpperCase());
 
-        let html = '';
-        const diasSemana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'];
-        
-        for (let i = 0; i < 7; i++) {
-            html += `<div class="calendario-dia-header">${diasSemana[i]}</div>`;
-        }
+        const diaInicio = new Date(ano, mes, 1).getDay();
+        const diasMes   = new Date(ano, mes + 1, 0).getDate();
+        const hoje      = new Date(); hoje.setHours(0,0,0,0);
 
-        for (let i = 0; i < diaInicio; i++) {
-            html += `<div class="calendario-dia desativado"></div>`;
-        }
+        const diasSemana = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+        let html = diasSemana.map(d => `<div class="calendario-dia-header">${d}</div>`).join('');
 
-        const hoje = new Date();
-        hoje.setHours(0, 0, 0, 0);
+        for (let i = 0; i < diaInicio; i++) html += `<div></div>`;
 
         for (let dia = 1; dia <= diasMes; dia++) {
-            const data = new Date(ano, mes, dia);
-            data.setHours(0, 0, 0, 0);
-            
-            const ehDomingo = data.getDay() === 0;
-            const ehPassada = data < hoje;
-            const desativado = ehDomingo || ehPassada;
-            const esSelecionada = dataSelecionada && data.getTime() === dataSelecionada.getTime();
-
-            html += `<div class="calendario-dia ${desativado ? 'desativado' : ''} ${esSelecionada ? 'selecionado' : ''}" 
-                        onclick="${desativado ? '' : `selecionarData(new Date(${ano}, ${mes}, ${dia}))`}">
-                        ${dia}
-                    </div>`;
+            const dt = new Date(ano, mes, dia); dt.setHours(0,0,0,0);
+            const off = dt.getDay() === 0 || dt < hoje;
+            const sel = dataSelecionada && dt.getTime() === dataSelecionada.getTime();
+            html += `<div class="calendario-dia ${off ? 'desativado' : ''} ${sel ? 'selecionado' : ''}"
+                         onclick="${off ? '' : `selecionarData(${ano},${mes},${dia})`}">${dia}</div>`;
         }
 
         document.getElementById("calendarioDias").innerHTML = html;
     }
 
-    function selecionarData(data) {
-        dataSelecionada = data;
-        document.getElementById("data").value = data.toISOString().split("T")[0];
+    function selecionarData(ano, mes, dia) {
+        dataSelecionada = new Date(ano, mes, dia);
+        document.getElementById("data").value =
+            `${ano}-${String(mes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+        document.getElementById("hora").value = "";
         renderCalendario();
         renderHorarios();
     }
 
     async function renderHorarios() {
         const barbeiro = document.getElementById("barbeiro").value;
-        const data = document.getElementById("data").value;
-
+        const data     = document.getElementById("data").value;
         if (!barbeiro || !data) return;
 
         document.getElementById("horariosContainer").style.display = "block";
+        document.getElementById("horariosManha").innerHTML = "<span style='color:#888;font-size:13px'>Carregando...</span>";
 
-        const { data: ocupados } = await _sb
-            .from("agendamentos")
-            .select("hora")
-            .eq("barbeiro", barbeiro)
-            .eq("data", data)
-            .eq("status", "confirmado");
+        const { data: ocp } = await _sb.from("agendamentos").select("hora")
+            .eq("barbeiro", barbeiro).eq("data", data).eq("status", "confirmado");
+        const ocupadas = ocp ? ocp.map(o => o.hora) : [];
 
-        const horasOcupadas = ocupados ? ocupados.map(o => o.hora) : [];
+        const horaSel = document.getElementById("hora").value;
 
-        const MANHA = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30"];
-        const TARDE = ["13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30"];
+        const btnHtml = h => {
+            const ocu = ocupadas.includes(h);
+            const sel = horaSel === h;
+            return `<button type="button" class="horario-btn ${sel ? 'selecionado' : ''}"
+                        onclick="selecionarHora('${h}')" ${ocu ? 'disabled' : ''}>${h}</button>`;
+        };
 
-        let htmlManha = MANHA.map(h => {
-            const ocupado = horasOcupadas.includes(h);
-            return `<button type="button" class="horario-btn ${documento.getElementById("hora")?.value === h ? 'selecionado' : ''}" 
-                            onclick="selecionarHora('${h}')" ${ocupado ? 'disabled' : ''}>
-                            ${h}
-                        </button>`;
-        }).join('');
+        document.getElementById("horariosManha").innerHTML = MANHA.map(btnHtml).join('');
+        document.getElementById("horariosTarde").innerHTML = TARDE.map(btnHtml).join('');
+        document.getElementById("horariosNoite").innerHTML = NOITE.map(btnHtml).join('');
 
-        let htmlTarde = TARDE.map(h => {
-            const ocupado = horasOcupadas.includes(h);
-            return `<button type="button" class="horario-btn ${document.getElementById("hora")?.value === h ? 'selecionado' : ''}" 
-                            onclick="selecionarHora('${h}')" ${ocupado ? 'disabled' : ''}>
-                            ${h}
-                        </button>`;
-        }).join('');
-
-        document.getElementById("horariosManha").innerHTML = htmlManha;
-        document.getElementById("horariosTarde").innerHTML = htmlTarde;
-
-        const dispManha = MANHA.filter(h => !horasOcupadas.includes(h)).length;
-        const dispTarde = TARDE.filter(h => !horasOcupadas.includes(h)).length;
-
-        document.getElementById("contManha").textContent = `— ${dispManha} horários disponíveis`;
-        document.getElementById("contTarde").textContent = `— ${dispTarde} horários disponíveis`;
+        document.getElementById("contManha").textContent = `${MANHA.filter(h=>!ocupadas.includes(h)).length} disponíveis`;
+        document.getElementById("contTarde").textContent = `${TARDE.filter(h=>!ocupadas.includes(h)).length} disponíveis`;
+        document.getElementById("contNoite").textContent = `${NOITE.filter(h=>!ocupadas.includes(h)).length} disponíveis`;
     }
 
-    function selecionarHora(hora) {
-        document.getElementById("hora").value = hora;
-        document.querySelectorAll(".horario-btn").forEach(btn => btn.classList.remove("selecionado"));
-        event.target.classList.add("selecionado");
+    function selecionarHora(h) {
+        document.getElementById("hora").value = h;
+        document.querySelectorAll(".horario-btn").forEach(b => b.classList.remove("selecionado"));
+        event.currentTarget.classList.add("selecionado");
     }
 
     function mesAnterior() {
@@ -551,13 +349,17 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-        renderCalendario();
+        const emailSalvo = sessionStorage.getItem("emailCliente");
+        if (emailSalvo) {
+            const inp = document.getElementById("emailCliente");
+            if (inp) { inp.value = emailSalvo; buscarMeusAgendamentos(emailSalvo); }
+        }
     });
 
     const menuToggle = document.getElementById('menuToggle');
     const nav = document.querySelector('nav');
     if (menuToggle) menuToggle.addEventListener('click', () => { nav.classList.toggle('open'); menuToggle.classList.toggle('active'); });
-    window.addEventListener('scroll', () => { const h = document.getElementById('header'); if (h) h.classList.toggle('scrolled', window.scrollY > 50); });
+    window.addEventListener('scroll', () => { const h = document.getElementById('header'); if(h) h.classList.toggle('scrolled', window.scrollY > 50); });
 </script>
 </body>
 </html>
