@@ -540,7 +540,7 @@ section {
     background: var(--preto-card);
     border: 20px solid var(--borda);
     border-radius: var(--radius-lg);
-    padding: 500px;
+    padding: 150px;
     text-align: center;
 }
 
