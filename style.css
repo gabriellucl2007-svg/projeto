@@ -533,7 +533,7 @@ section {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    max-width: 480px;
+    max-width: 300px;
     margin: 0 auto;
 }
 
