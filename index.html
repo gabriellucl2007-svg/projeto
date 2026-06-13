@@ -604,24 +604,6 @@
     });
 </script>
  
-    // Menu mobile
-    const menuToggle = document.getElementById('menuToggle');
-    const nav = document.querySelector('nav');
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('open');
-            menuToggle.classList.toggle('active');
-        });
-    }
- 
-    // Header scroll
-    window.addEventListener('scroll', () => {
-        const header = document.getElementById('header');
-        if (header) {
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        }
-    });
-</script>
  
 </body>
 </html>
