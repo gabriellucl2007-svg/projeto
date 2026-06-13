@@ -530,17 +530,16 @@ section {
 
 .horarios-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(3800px, 1fr));
-    gap: 24px;
-    max-width: 100px;
-    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    width: 100%;
 }
 
 .horario-card {
     background: var(--preto-card);
-    border: 20px solid var(--borda);
+    border: 1px solid var(--borda);
     border-radius: var(--radius-lg);
-    padding: 24x;
+    padding: 24px;
     text-align: center;
 }
 
