@@ -127,6 +127,10 @@ async function enviarEmail(emailCliente, nome, barbeiro, servico, data, hora, li
         console.log("Email enviado!");
     } catch (err) {
         console.error("Erro ao enviar email:", err);
+
+        const EMAILJS_SERVICE  = "service_adfhhbl";
+const EMAILJS_TEMPLATE = "template_6h7955l";
+const EMAILJS_PUBLIC   = "uAeU1pmkfahwGGcbd";
         // Não bloqueia o agendamento se o email falhar
     }
 }
@@ -148,6 +152,4 @@ function formatarData(d) {
     return `${dia}/${m}/${a}`;
 }
 
-const EMAILJS_SERVICE  = "service_adfhhbl";
-const EMAILJS_TEMPLATE = "template_6h7955l";
-const EMAILJS_PUBLIC   = "uAeU1pmkfahwGGcbd";
+
