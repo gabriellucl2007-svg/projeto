@@ -525,7 +525,34 @@ section {
 #horarios {
     padding: 100px 0;
 }
+.horario-btn {
+    height: 48px;
+    border: 1px solid var(--borda);
+    background: var(--preto-card);
+    color: var(--branco);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
 
+.horario-btn:hover:not(:disabled) {
+    border-color: var(--dourado);
+    color: var(--dourado);
+}
+
+.horario-btn.selecionado {
+    background: var(--dourado);
+    color: var(--preto);
+    border-color: var(--dourado);
+}
+
+.horario-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
 .horarios-botoes {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -579,10 +606,11 @@ section {
 
 @media (max-width: 768px) {
     .horarios-grid {
-        grid-template-columns: 1fr;
-        max-width: 350px;
-        margin: 40px auto 0;
-    }
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    width: 100%;
+}
 
     .horario-horas span {
         font-size: 24px;
@@ -627,18 +655,12 @@ section {
 }
 
 .agendamento-wrapper {
-    max-width: 560px;
-    margin: 0 auto;
+    max-width: 800px;
 }
 
-.form-agendamento {
-    background: var(--preto-card);
-    border: 1px solid var(--borda);
-    border-radius: var(--radius-lg);
+..form-agendamento {
     padding: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    width: 100%;
 }
 
 .form-group {
