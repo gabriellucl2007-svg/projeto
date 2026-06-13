@@ -8,7 +8,7 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 // EmailJS — substitua com suas chaves em emailjs.com
 const EMAILJS_SERVICE  = "service_adfhhbl";
 const EMAILJS_TEMPLATE = "template_6h7955l";
-const EMAILJS_PUBLIC   = "uAeU1pmkfahwGGcbd";
+const EMAILJS_PUBLIC   = "uAeU1pmkfahwCGcbd";
 // URL base do site (para link de cancelamento)
 const SITE_URL = "https://gabriellucl2007-svg.github.io/projeto";
 
