@@ -538,7 +538,7 @@ section {
 
 .horario-card {
     background: var(--preto-card);
-    border: 10px solid var(--borda);
+    border: 100px solid var(--borda);
     border-radius: var(--radius-lg);
     padding: 50px;
     text-align: center;
