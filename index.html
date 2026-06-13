@@ -29,11 +29,11 @@
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="seu@email.com">
+                <input type="email" id="email" placeholder="seu@email.com" required>
             </div>
             <div class="form-group">
                 <label for="password">Senha</label>
-                <input type="password" id="password" placeholder="••••••••">
+                <input type="password" id="password" placeholder="••••••••" required>
             </div>
 
             <button onclick="login()" class="btn-submit">Entrar</button>
@@ -50,15 +50,23 @@
 
             <div class="form-group">
                 <label for="nomeCadastro">Seu Nome</label>
-                <input type="text" id="nomeCadastro" placeholder="João Silva">
+                <input type="text" id="nomeCadastro" placeholder="João Silva" required>
             </div>
             <div class="form-group">
                 <label for="emailCadastro">Email</label>
-                <input type="email" id="emailCadastro" placeholder="seu@email.com">
+                <input type="email" id="emailCadastro" placeholder="seu@email.com" required>
             </div>
             <div class="form-group">
                 <label for="passwordCadastro">Senha</label>
-                <input type="password" id="passwordCadastro" placeholder="Mínimo 6 caracteres">
+                <input type="password" id="passwordCadastro" placeholder="Mínimo 6 caracteres" required>
+            </div>
+            <div class="form-group">
+                <label for="tipoConta">Você é:</label>
+                <select id="tipoConta" required>
+                    <option value="">Selecione...</option>
+                    <option value="cliente">Cliente</option>
+                    <option value="barbeiro">Barbeiro</option>
+                </select>
             </div>
 
             <button onclick="fazerCadastro()" class="btn-submit">Cadastrar</button>
@@ -132,46 +140,57 @@
                 <div class="servico-info"><h3>Corte</h3><p>Corte personalizado no estilo que combina com você.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 45</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Barba</h3><p>Acabamento preciso para uma barba impecável.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 30</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Pigmentação</h3><p>Disfarce os fios brancos com naturalidade.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 25</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Sobrancelha</h3><p>Design e alinhamento perfeito das sobrancelhas.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 5</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Alisamento</h3><p>Cabelo liso e saudável com resultado duradouro.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 20</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card destaque">
                 <div class="servico-info"><h3>Corte + Barba</h3><p>A combinação clássica. Corte e barba completos.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 75</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Corte + Pigmentação</h3><p>Corte completo com pigmentação inclusa.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 65</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Corte + Sobrancelha</h3><p>Corte com design de sobrancelha incluído.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 50</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Corte + Alisamento</h3><p>Corte moderno com alisamento profissional.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 60</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card destaque">
                 <div class="servico-info"><h3>Corte + Barba + Pigmentação</h3><p>Experiência completa. O pacote mais escolhido.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 80</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Luzes + Corte</h3><p>Mechas e luzes com corte incluso.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 125</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
             </div>
+
             <div class="servico-card">
                 <div class="servico-info"><h3>Platinado + Corte</h3><p>Descoloração platinada com corte profissional.</p></div>
                 <div class="servico-preco-acao"><span class="preco">R$ 150</span><a href="#agendamento" class="btn-agendar-servico">Agendar</a></div>
@@ -274,26 +293,10 @@
                 </div>
                 <div class="form-group">
                     <label for="barbeiro">Barbeiro</label>
-                    <select id="barbeiro">
+                    <select id="barbeiro" required>
+                        <option value="">Selecione...</option>
                         <option value="João">João</option>
                         <option value="Matheus">Matheus</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="servico">Serviço</label>
-                    <select id="servico">
-                        <option value="Corte">Corte — R$ 45</option>
-                        <option value="Barba">Barba — R$ 30</option>
-                        <option value="Pigmentação">Pigmentação — R$ 25</option>
-                        <option value="Sobrancelha">Sobrancelha — R$ 5</option>
-                        <option value="Alisamento">Alisamento — R$ 20</option>
-                        <option value="Corte + Barba">Corte + Barba — R$ 75</option>
-                        <option value="Corte + Pigmentação">Corte + Pigmentação — R$ 65</option>
-                        <option value="Corte + Sobrancelha">Corte + Sobrancelha — R$ 50</option>
-                        <option value="Corte + Alisamento">Corte + Alisamento — R$ 60</option>
-                        <option value="Corte + Barba + Pigmentação">Corte + Barba + Pigmentação — R$ 80</option>
-                        <option value="Luzes + Corte">Luzes + Corte — R$ 125</option>
-                        <option value="Platinado + Corte">Platinado + Corte — R$ 150</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -302,7 +305,8 @@
                 </div>
                 <div class="form-group">
                     <label for="hora">Horário</label>
-                    <select id="hora">
+                    <select id="hora" required>
+                        <option value="">Selecione...</option>
                         <option>08:00</option><option>08:30</option><option>09:00</option>
                         <option>09:30</option><option>10:00</option><option>10:30</option>
                         <option>11:00</option><option>11:30</option><option>13:00</option>
@@ -373,6 +377,18 @@
             menuToggle.classList.toggle('active');
         });
     }
+
+    // Header scroll
+    window.addEventListener('scroll', () => {
+        const header = document.getElementById('header');
+        if (header) {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        }
+    });
+</script>
+
+</body>
+</html>    }
 
     // Header scroll
     window.addEventListener('scroll', () => {
