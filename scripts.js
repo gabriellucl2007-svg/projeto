@@ -5,12 +5,10 @@
 const SUPABASE_URL = "https://vsvlfkddhebxutugtniu.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8";
 
-// EmailJS — suas chaves
 const EMAILJS_SERVICE  = "service_adfhhbl";
 const EMAILJS_TEMPLATE = "template_6h7955l";
 const EMAILJS_PUBLIC   = "uAeU1pmkfahwGGcbd";
 
-// URL base do site
 const SITE_URL = "https://gabriellucl2007-svg.github.io/projeto";
 
 var _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -18,20 +16,64 @@ var _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // =============================================
 // INICIALIZAÇÃO
 // =============================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const dataInput = document.getElementById("data");
     if (dataInput) dataInput.min = new Date().toISOString().split("T")[0];
 
     const form = document.getElementById("formAgendamento");
     if (form) form.addEventListener("submit", agendarHorario);
 
-    // Se tiver email salvo, mostra agendamentos automaticamente
+    // Atualiza horários disponíveis quando barbeiro ou data muda
+    const barbeiro = document.getElementById("barbeiro");
+    const data     = document.getElementById("data");
+    if (barbeiro) barbeiro.addEventListener("change", atualizarHorarios);
+    if (data)     data.addEventListener("change", atualizarHorarios);
+
+    // Se tiver email salvo, mostra agendamentos
     const emailSalvo = sessionStorage.getItem("emailCliente");
     if (emailSalvo) {
-        document.getElementById("emailCliente").value = emailSalvo;
-        buscarMeusAgendamentos(emailSalvo);
+        const emailInput = document.getElementById("emailCliente");
+        if (emailInput) emailInput.value = emailSalvo;
+        await buscarMeusAgendamentos(emailSalvo);
     }
 });
+
+// =============================================
+// ATUALIZAR HORÁRIOS DISPONÍVEIS
+// =============================================
+const TODOS_HORARIOS = [
+    "08:00","08:30","09:00","09:30","10:00","10:30",
+    "11:00","11:30","13:00","13:30","14:00","14:30",
+    "15:00","15:30","16:00","16:30","17:00","17:30",
+    "18:00","18:30","19:00","19:30"
+];
+
+async function atualizarHorarios() {
+    const barbeiro  = document.getElementById("barbeiro")?.value;
+    const data      = document.getElementById("data")?.value;
+    const horaSelect = document.getElementById("hora");
+    if (!barbeiro || !data || !horaSelect) return;
+
+    // Busca horários já ocupados
+    const { data: ocupados } = await _sb
+        .from("agendamentos")
+        .select("hora")
+        .eq("barbeiro", barbeiro)
+        .eq("data", data)
+        .eq("status", "confirmado");
+
+    const horasOcupadas = ocupados ? ocupados.map(o => o.hora) : [];
+
+    // Atualiza o select
+    horaSelect.innerHTML = TODOS_HORARIOS.map(h => {
+        const ocupado = horasOcupadas.includes(h);
+        return `<option value="${h}" ${ocupado ? 'disabled style="color:#555"' : ''}>${h}${ocupado ? ' — Ocupado' : ''}</option>`;
+    }).join('');
+
+    // Seleciona primeiro horário disponível
+    const disponivel = TODOS_HORARIOS.find(h => !horasOcupadas.includes(h));
+    if (disponivel) horaSelect.value = disponivel;
+}
 
 // =============================================
 // AGENDAR
@@ -57,7 +99,7 @@ async function agendarHorario(e) {
         return;
     }
 
-    // Verifica conflito
+    // Verifica conflito novamente (segurança)
     const { data: conflito } = await _sb
         .from("agendamentos")
         .select("id")
@@ -67,16 +109,16 @@ async function agendarHorario(e) {
         .eq("status", "confirmado");
 
     if (conflito && conflito.length > 0) {
-        alert("Este horário já está ocupado! Por favor, escolha outro.");
+        alert("Este horário acabou de ser ocupado! Escolha outro.");
+        await atualizarHorarios();
         btn.textContent = "Confirmar Agendamento";
         btn.disabled = false;
         return;
     }
 
-    // Token de cancelamento
+    // Token único para cancelamento
     const token = Math.random().toString(36).substring(2) + Date.now().toString(36);
 
-    // Salva no banco
     const { error } = await _sb
         .from("agendamentos")
         .insert([{
@@ -102,10 +144,9 @@ async function agendarHorario(e) {
     const linkCancelamento = `${SITE_URL}/cancelamento.html?token=${token}`;
     await enviarEmail(emailCliente, nome, barbeiro, servico, dataAgend, hora, linkCancelamento);
 
-    // Salva email na sessão para mostrar agendamentos
     sessionStorage.setItem("emailCliente", emailCliente);
 
-    alert(`Agendamento confirmado! Enviamos um email para ${emailCliente} com os detalhes.`);
+    alert(`Agendamento confirmado! Enviamos um email para ${emailCliente} com os detalhes e o link para cancelar.`);
 
     document.getElementById("formAgendamento").reset();
     document.getElementById("data").min = new Date().toISOString().split("T")[0];
@@ -114,8 +155,8 @@ async function agendarHorario(e) {
     btn.textContent = "Confirmar Agendamento";
     btn.disabled = false;
 
-    // Atualiza lista
     await buscarMeusAgendamentos(emailCliente);
+    await atualizarHorarios();
 }
 
 // =============================================
@@ -156,18 +197,40 @@ async function buscarMeusAgendamentos(email) {
                     </span>
                 </p>
                 ${a.status === 'confirmado' ? `
-                <a href="${SITE_URL}/cancelamento.html?token=${a.token_cancelamento}"
+                <button onclick="cancelarAgendamentoCliente('${a.token_cancelamento}', '${email}')"
                    style="display:inline-block;margin-top:10px;color:#e74c3c;font-size:13px;border:1px solid #e74c3c;
-                   padding:5px 14px;border-radius:4px;text-decoration:none;">
+                   padding:5px 14px;border-radius:4px;background:transparent;cursor:pointer;">
                    Cancelar
-                </a>` : ''}
+                </button>` : ''}
             </div>
         `).join('')}
     `;
 }
 
 // =============================================
-// BUSCAR POR EMAIL (botão manual)
+// CANCELAR AGENDAMENTO (pelo cliente no site)
+// =============================================
+async function cancelarAgendamentoCliente(token, email) {
+    if (!confirm("Tem certeza que quer cancelar este agendamento?")) return;
+
+    const { error } = await _sb
+        .from("agendamentos")
+        .update({ status: "cancelado" })
+        .eq("token_cancelamento", token);
+
+    if (error) {
+        alert("Erro ao cancelar. Tente novamente.");
+        console.error(error);
+        return;
+    }
+
+    alert("Agendamento cancelado!");
+    await buscarMeusAgendamentos(email);
+    await atualizarHorarios();
+}
+
+// =============================================
+// VER AGENDAMENTOS (botão manual)
 // =============================================
 async function verMeusAgendamentos() {
     const email = document.getElementById("emailCliente").value.trim();
@@ -194,6 +257,14 @@ async function enviarEmail(emailCliente, nome, barbeiro, servico, data, hora, li
     } catch (err) {
         console.error("Erro ao enviar email:", err);
     }
+}
+
+// =============================================
+// LOGOUT (login.html)
+// =============================================
+async function fazerLogout() {
+    await _sb.auth.signOut();
+    window.location.href = "login.html";
 }
 
 // =============================================
