@@ -29,6 +29,14 @@
         .btn-sair:hover{background:#e74c3c;color:#fff}
         .adm-body{max-width:1100px;margin:0 auto;padding:32px 24px}
 
+        .abas{display:flex;gap:16px;margin-bottom:32px;border-bottom:1px solid var(--borda);padding-bottom:16px}
+        .aba-btn{background:transparent;border:none;color:var(--cinza);padding:8px 16px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+        .aba-btn.ativa{color:var(--dourado);border-bottom-color:var(--dourado)}
+        .aba-btn:hover{color:var(--dourado)}
+
+        .aba-conteudo{display:none}
+        .aba-conteudo.ativa{display:block}
+
         .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px}
         .stat{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:20px;text-align:center}
         .stat-n{font-family:'Playfair Display',serif;font-size:36px;color:var(--dourado);display:block}
@@ -52,11 +60,27 @@
         .badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;text-transform:uppercase}
         .badge-confirmado{background:rgba(46,204,113,.15);color:#2ecc71}
         .badge-cancelado{background:rgba(231,76,60,.15);color:#e74c3c}
+        .badge-plano{background:rgba(52,152,219,.15);color:#3498db}
         .btn-del{background:transparent;border:1px solid #e74c3c;color:#e74c3c;padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .2s}
         .btn-del:hover{background:#e74c3c;color:#fff}
         .vazio{text-align:center;padding:48px;color:var(--cinza)}
 
-        @media(max-width:600px){.filtros{flex-direction:column}.adm-body{padding:20px 16px}}
+        .form-grupo{background:var(--card);border:1px solid var(--borda);border-radius:8px;padding:20px;margin-bottom:20px}
+        .form-grupo h3{color:var(--dourado);font-size:14px;margin-bottom:16px;font-weight:600}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+        .form-row.full{grid-template-columns:1fr}
+        .form-field label{display:block;font-size:11px;font-weight:600;color:var(--dourado);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+        .form-field input,.form-field select{width:100%;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid var(--borda);border-radius:6px;color:var(--branco);font-size:13px;outline:none}
+        .form-field input:focus,.form-field select:focus{border-color:var(--dourado)}
+        .btn-submit{background:var(--dourado);color:var(--preto);padding:10px 20px;border:none;border-radius:6px;font-weight:700;font-size:12px;text-transform:uppercase;cursor:pointer;transition:opacity .2s}
+        .btn-submit:hover{opacity:.9}
+
+        @media(max-width:600px){
+            .adm-body{padding:20px 16px}
+            .filtros{flex-direction:column}
+            .form-row{grid-template-columns:1fr}
+            .abas{flex-wrap:wrap}
+        }
     </style>
 </head>
 <body>
@@ -82,37 +106,122 @@
 
     <div class="adm-body">
 
-        <div class="stats">
-            <div class="stat"><span class="stat-n" id="stTotal">—</span><span class="stat-l">Total</span></div>
-            <div class="stat"><span class="stat-n" id="stHoje">—</span><span class="stat-l">Hoje</span></div>
-            <div class="stat"><span class="stat-n" id="stJoao">—</span><span class="stat-l">João</span></div>
-            <div class="stat"><span class="stat-n" id="stMatheus">—</span><span class="stat-l">Matheus</span></div>
+        <div class="abas">
+            <button class="aba-btn ativa" onclick="trocarAba('agendamentos')">📅 Agendamentos</button>
+            <button class="aba-btn" onclick="trocarAba('planos')">💎 Planos</button>
         </div>
 
-        <div class="filtros">
-            <div class="fg"><label>Barbeiro</label><select id="fBarbeiro"><option value="">Todos</option><option>João</option><option>Matheus</option></select></div>
-            <div class="fg"><label>Data</label><input type="date" id="fData"></div>
-            <div class="fg"><label>Status</label><select id="fStatus"><option value="">Todos</option><option value="confirmado">Confirmado</option><option value="cancelado">Cancelado</option></select></div>
-            <button class="btn-filtrar" onclick="carregar()">Filtrar</button>
+        <!-- ABA AGENDAMENTOS -->
+        <div id="agendamentos" class="aba-conteudo ativa">
+            <div class="stats">
+                <div class="stat"><span class="stat-n" id="stTotal">—</span><span class="stat-l">Total</span></div>
+                <div class="stat"><span class="stat-n" id="stHoje">—</span><span class="stat-l">Hoje</span></div>
+                <div class="stat"><span class="stat-n" id="stJoao">—</span><span class="stat-l">João</span></div>
+                <div class="stat"><span class="stat-n" id="stMatheus">—</span><span class="stat-l">Matheus</span></div>
+            </div>
+
+            <div class="filtros">
+                <div class="fg"><label>Barbeiro</label><select id="fBarbeiro"><option value="">Todos</option><option>João</option><option>Matheus</option></select></div>
+                <div class="fg"><label>Data</label><input type="date" id="fData"></div>
+                <div class="fg"><label>Status</label><select id="fStatus"><option value="">Todos</option><option value="confirmado">Confirmado</option><option value="cancelado">Cancelado</option></select></div>
+                <button class="btn-filtrar" onclick="carregar()">Filtrar</button>
+            </div>
+
+            <div class="tabela-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Email</th>
+                            <th>Barbeiro</th>
+                            <th>Serviço</th>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Tipo</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"><tr><td colspan="9" class="vazio">Carregando...</td></tr></tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="tabela-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Email</th>
-                        <th>Barbeiro</th>
-                        <th>Serviço</th>
-                        <th>Data</th>
-                        <th>Hora</th>
-                        <th>Status</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody"><tr><td colspan="8" class="vazio">Carregando...</td></tr></tbody>
-            </table>
+        <!-- ABA PLANOS -->
+        <div id="planos" class="aba-conteudo">
+            <div class="form-grupo">
+                <h3>➕ Criar Novo Plano</h3>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Email do Cliente</label>
+                        <input type="email" id="planoEmail" placeholder="cliente@email.com">
+                    </div>
+                    <div class="form-field">
+                        <label>Nome do Cliente</label>
+                        <input type="text" id="planoNome" placeholder="Nome completo">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Barbeiro</label>
+                        <select id="planoBarbeiro">
+                            <option value="">Selecione...</option>
+                            <option value="João">João</option>
+                            <option value="Matheus">Matheus</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label>Serviço</label>
+                        <select id="planoServico">
+                            <option value="">Selecione...</option>
+                            <option value="Corte">Corte</option>
+                            <option value="Barba">Barba</option>
+                            <option value="Corte + Barba">Corte + Barba</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Data</label>
+                        <input type="date" id="planoData">
+                    </div>
+                    <div class="form-field">
+                        <label>Horário</label>
+                        <select id="planoHora">
+                            <option value="">Selecione...</option>
+                            <option>08:00</option><option>08:30</option><option>09:00</option>
+                            <option>09:30</option><option>10:00</option><option>10:30</option>
+                            <option>11:00</option><option>11:30</option><option>13:00</option>
+                            <option>13:30</option><option>14:00</option><option>14:30</option>
+                            <option>15:00</option><option>15:30</option><option>16:00</option>
+                            <option>16:30</option><option>17:00</option><option>17:30</option>
+                            <option>18:00</option><option>18:30</option><option>19:00</option>
+                            <option>19:30</option><option>20:00</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-submit" onclick="criarPlano()">Criar Plano</button>
+            </div>
+
+            <h3 style="color:var(--dourado);margin-top:32px;margin-bottom:16px;font-size:14px;">📋 Planos Ativos</h3>
+            <div class="tabela-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Email</th>
+                            <th>Barbeiro</th>
+                            <th>Serviço</th>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tBodyPlanos"><tr><td colspan="7" class="vazio">Carregando...</td></tr></tbody>
+                </table>
+            </div>
         </div>
+
     </div>
 </div>
 
@@ -121,6 +230,15 @@
     const SUPABASE_URL = "https://vsvlfkddhebxutugtniu.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzdmxma2RkaGVieHV0dWd0bml1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NjYyOTQsImV4cCI6MjA5NjU0MjI5NH0.uOveZk9BJ7WvIgR8E3_Cd65Svq6Nm5r7mfctpxoj3S8";
     const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function trocarAba(aba) {
+        document.querySelectorAll('.aba-conteudo').forEach(el => el.classList.remove('ativa'));
+        document.querySelectorAll('.aba-btn').forEach(el => el.classList.remove('ativa'));
+        document.getElementById(aba).classList.add('ativa');
+        event.target.classList.add('ativa');
+        
+        if (aba === 'planos') carregarPlanos();
+    }
 
     function verificarSenha() {
         const s = document.getElementById('senhaAdmin').value;
@@ -158,7 +276,7 @@
         const { data: rows, error } = await q;
         if (error) { 
             console.error(error);
-            document.getElementById('tbody').innerHTML='<tr><td colspan="8" class="vazio">Erro ao carregar.</td></tr>'; 
+            document.getElementById('tbody').innerHTML='<tr><td colspan="9" class="vazio">Erro ao carregar.</td></tr>'; 
             return; 
         }
 
@@ -176,7 +294,7 @@
 
     function renderTabela(rows) {
         const tb = document.getElementById('tbody');
-        if (!rows || !rows.length) { tb.innerHTML='<tr><td colspan="8" class="vazio">Nenhum agendamento.</td></tr>'; return; }
+        if (!rows || !rows.length) { tb.innerHTML='<tr><td colspan="9" class="vazio">Nenhum agendamento.</td></tr>'; return; }
         tb.innerHTML = rows.map(r=>`
             <tr>
                 <td><strong>${r.nome}</strong></td>
@@ -185,6 +303,7 @@
                 <td>${r.servico || '—'}</td>
                 <td>${fmt(r.data)}</td>
                 <td>${r.hora}</td>
+                <td><span class="badge badge-${r.tipo_agendamento==='plano'?'plano':'confirmado'}">${r.tipo_agendamento==='plano'?'Plano':'Normal'}</span></td>
                 <td><span class="badge badge-${r.status||'confirmado'}">${r.status||'confirmado'}</span></td>
                 <td>${r.status!=='cancelado'?`<button class="btn-del" onclick="cancelarAdmin(${r.id})">Cancelar</button>`:'—'}</td>
             </tr>
@@ -201,6 +320,90 @@
         }
         alert('Agendamento cancelado!');
         carregar();
+    }
+
+    async function criarPlano() {
+        const email = document.getElementById('planoEmail').value.trim();
+        const nome = document.getElementById('planoNome').value.trim();
+        const barbeiro = document.getElementById('planoBarbeiro').value;
+        const servico = document.getElementById('planoServico').value;
+        const data = document.getElementById('planoData').value;
+        const hora = document.getElementById('planoHora').value;
+
+        if (!email || !nome || !barbeiro || !servico || !data || !hora) {
+            alert('Preencha todos os campos');
+            return;
+        }
+
+        const { error } = await _sb.from('agendamentos').insert([{
+            nome,
+            email_cliente: email,
+            barbeiro,
+            servico,
+            data,
+            hora,
+            status: 'confirmado',
+            tipo_agendamento: 'plano'
+        }]);
+
+        if (error) {
+            alert('Erro ao criar plano');
+            console.error(error);
+            return;
+        }
+
+        alert('Plano criado com sucesso!');
+        document.getElementById('planoEmail').value = '';
+        document.getElementById('planoNome').value = '';
+        document.getElementById('planoBarbeiro').value = '';
+        document.getElementById('planoServico').value = '';
+        document.getElementById('planoData').value = '';
+        document.getElementById('planoHora').value = '';
+        carregarPlanos();
+    }
+
+    async function carregarPlanos() {
+        const { data: planos, error } = await _sb
+            .from('agendamentos')
+            .select('*')
+            .eq('tipo_agendamento', 'plano')
+            .order('data', { ascending: false });
+
+        if (error) {
+            console.error(error);
+            document.getElementById('tBodyPlanos').innerHTML='<tr><td colspan="7" class="vazio">Erro ao carregar.</td></tr>';
+            return;
+        }
+
+        const tb = document.getElementById('tBodyPlanos');
+        if (!planos || !planos.length) {
+            tb.innerHTML='<tr><td colspan="7" class="vazio">Nenhum plano criado.</td></tr>';
+            return;
+        }
+
+        tb.innerHTML = planos.map(p=>`
+            <tr>
+                <td><strong>${p.nome}</strong></td>
+                <td>${p.email_cliente}</td>
+                <td>${p.barbeiro}</td>
+                <td>${p.servico}</td>
+                <td>${fmt(p.data)}</td>
+                <td>${p.hora}</td>
+                <td><button class="btn-del" onclick="deletarPlano(${p.id})">Deletar</button></td>
+            </tr>
+        `).join('');
+    }
+
+    async function deletarPlano(id) {
+        if (!confirm('Deletar este plano?')) return;
+        const { error } = await _sb.from('agendamentos').delete().eq('id', id);
+        if (error) {
+            alert('Erro ao deletar');
+            console.error(error);
+            return;
+        }
+        alert('Plano deletado!');
+        carregarPlanos();
     }
 
     function fmt(d) {
